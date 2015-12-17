@@ -1,0 +1,82 @@
+---
+title: "EDA on NYC Test Scores Data"
+author: "Ransford Hyman Jr."
+date: "December 15, 2015"
+output: html_document
+---
+
+
+```{r Reshaping All Students Data} 
+setwd('C:\\Users\\ransf\\Documents')
+df <- read.csv("BoroughELAResults20132015_ALL.csv")
+names(df)
+str(df$Grade)
+df <- subset(df, df$Grade != "All Grades" )
+df$Subject <- "ELA"
+
+```
+
+```{r Reshaping Students Data by Gender ELA}
+df1 <- read.csv("BoroughELAResults20132015_Gender.csv")
+df1 <- subset(df1, df1$Grade != "All Grades" )
+df1$Subject <- "ELA"
+
+```
+
+```{r Reshaping Students Data by Ethnicity}
+df2 <- read.csv("BoroughELAResults20132015_Ethnicity.csv")
+df2 <- subset(df2, df2$Grade != "All Grades" )
+df2$Subject <- "ELA"
+```
+
+
+
+```{r Reshaping Students Data by ELL}
+df3 <- read.csv("BoroughELAResults20132015_ELL.csv")
+df3 <- subset(df3, df3$Grade != "All Grades" )
+df3$Subject <- "ELA"
+```
+
+```{r Combining ELA Data}
+library(dplyr)
+ela.2013.2015 <- bind_rows(df,df1)
+ela.2013.2015 <- bind_rows(ela.2013.2015,df2)
+ela.2013.2015 <- bind_rows(ela.2013.2015,df3)
+```
+
+
+```{r Reshaping Math Data All}
+rm(df, df1, df2, df3)
+df <- read.csv("BoroughMathResults20132015_ALL.csv")
+df <- subset(df, df$Grade != "All Grades" )
+df$Subject <- "Math"
+
+```
+
+```{r Reshaping Math Data ELL}
+df1 <- read.csv("BoroughMathResults20132015_ELL.csv")
+df1 <- subset(df1, df1$Grade != "All Grades" )
+df1$Subject <- "Math"
+```
+
+```{r Reshaping Math Data Ethnicity}
+df2 <- read.csv("BoroughMathResults20132015_Ethnicity.csv")
+df2 <- subset(df2, df2$Grade != "All Grades" )
+df2$Subject <- "Math"
+```
+
+```{r Reshaping Math Data Gender}
+df3 <- read.csv("BoroughMathResults20132015_Gender.csv")
+df3 <- subset(df3, df3$Grade != "All Grades" )
+df3$Subject <- "Math"
+```
+
+
+```{r Combining Math Data}
+math.2013.2015 <- bind_rows(df,df1)
+math.2013.2015 <- bind_rows(math.2013.2015,df2)
+math.2013.2015 <- bind_rows(math.2013.2015,df3)
+
+borough_data <- bind_rows(ela.2013.2015,math.2013.2015)
+rm(ela.2013.2015,math.2013.2015)
+```
