@@ -5,36 +5,39 @@ date: "December 15, 2015"
 output: html_document
 ---
 
+```{r Reshaping functions}
+initial_reshape_function <- function(df,s){
+  df <- subset(df, df$Grade != "All Grades")
+  df$Subject <- s
+  return(df)
+}
+```
 
 ```{r Reshaping All Students Data} 
-setwd('C:\\Users\\ransf\\Documents')
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df <- read.csv("BoroughELAResults20132015_ALL.csv")
-names(df)
-str(df$Grade)
-df <- subset(df, df$Grade != "All Grades" )
-df$Subject <- "ELA"
-
+df <- initial_reshape_function(df,"ELA")
 ```
 
 ```{r Reshaping Students Data by Gender ELA}
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df1 <- read.csv("BoroughELAResults20132015_Gender.csv")
-df1 <- subset(df1, df1$Grade != "All Grades" )
-df1$Subject <- "ELA"
+df1 <- initial_reshape_function(df1, "ELA")
 
 ```
 
 ```{r Reshaping Students Data by Ethnicity}
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df2 <- read.csv("BoroughELAResults20132015_Ethnicity.csv")
-df2 <- subset(df2, df2$Grade != "All Grades" )
-df2$Subject <- "ELA"
+df2 <- initial_reshape_function(df2, "ELA")
 ```
 
 
 
 ```{r Reshaping Students Data by ELL}
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df3 <- read.csv("BoroughELAResults20132015_ELL.csv")
-df3 <- subset(df3, df3$Grade != "All Grades" )
-df3$Subject <- "ELA"
+df3 <- initial_reshape_function(df3, "ELA")
 ```
 
 ```{r Combining ELA Data}
@@ -47,28 +50,29 @@ ela.2013.2015 <- bind_rows(ela.2013.2015,df3)
 
 ```{r Reshaping Math Data All}
 rm(df, df1, df2, df3)
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df <- read.csv("BoroughMathResults20132015_ALL.csv")
-df <- subset(df, df$Grade != "All Grades" )
-df$Subject <- "Math"
+df <- initial_reshape_function(df, "Math")
+
 
 ```
 
 ```{r Reshaping Math Data ELL}
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df1 <- read.csv("BoroughMathResults20132015_ELL.csv")
-df1 <- subset(df1, df1$Grade != "All Grades" )
-df1$Subject <- "Math"
+df1 <- initial_reshape_function(df1, "Math")
 ```
 
 ```{r Reshaping Math Data Ethnicity}
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df2 <- read.csv("BoroughMathResults20132015_Ethnicity.csv")
-df2 <- subset(df2, df2$Grade != "All Grades" )
-df2$Subject <- "Math"
+df2 <- initial_reshape_function(df2, "Math")
 ```
 
 ```{r Reshaping Math Data Gender}
+setwd('C:\\Users\\ransf\\Documents\\BoroughData/')
 df3 <- read.csv("BoroughMathResults20132015_Gender.csv")
-df3 <- subset(df3, df3$Grade != "All Grades" )
-df3$Subject <- "Math"
+df3 <- initial_reshape_function(df3, "Math")
 ```
 
 
@@ -78,5 +82,175 @@ math.2013.2015 <- bind_rows(math.2013.2015,df2)
 math.2013.2015 <- bind_rows(math.2013.2015,df3)
 
 borough_data <- bind_rows(ela.2013.2015,math.2013.2015)
+borough_data$Grade <- as.integer(borough_data$Grade)
+borough_data$Category <- factor(borough_data$Category)
+borough_data$Subject <- factor(borough_data$Subject)
 rm(ela.2013.2015,math.2013.2015)
+rm(df, df1, df2, df3)
+```
+
+Let's analyze how the mean test scores look across each Borough from 2013-2015
+```{r Analyzing Borough Data, echo=FALSE}
+library(ggplot2)
+p1 <- ggplot(subset(borough_data,Category == "All Students" ), aes(y=Mean.Scale.Score, x=Borough)) + geom_boxplot() + ylab("Mean Score for All students and both Subjects")
+
+p2 <- ggplot(subset(borough_data,Category == "All Students" & Subject == "ELA"), aes(Borough,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in ELA")
+
+p3 <- ggplot(subset(borough_data,Category == "All Students" & Subject == "Math"), aes(Borough,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in Math")
+
+library(gridExtra)
+grid.arrange(p1,p2,p3,ncol=2)
+```
+
+It looks like Queens has the highest Median mean scores across all the boroughs.  Now we want to analyze scores for each subject
+
+From the plots, The Bronx has significantly lower test scores then the other boroughs.  Staten Island has the higest median mean score in ELA while Queens has the highest median mean score in Mathematics.  We now have a look at the scores by Gender across all boroughs.
+
+```{r}
+p1 <- ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students")
+
+
+
+p2 <- ggplot(subset(borough_data,Category == c("Female", "Male") & Subject == "ELA"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in ELA")
+
+p3 <- ggplot(subset(borough_data,Category == c("Female", "Male") & Subject == "Math"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in Math")
+
+grid.arrange(p1,p2,p3, ncol=2)
+```
+
+
+The plots shows that Females outperform the males in both Math and ELA.  The difference in median scores between males and females is significant. Now let's look at the breakdown by race across all boroughs.
+
+```{r Boxplots categorized by race, echo=FALSE}
+p1 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students")
+
+
+
+
+p2 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian") & Subject == "ELA"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in ELA")
+
+p3 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian") & Subject == "Math"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in Math")
+
+grid.arrange(p1,p2,p3, ncol=2)
+```
+
+The data shows that Asian students outperform all other races in all categories.  The median score is for Asian students is at least 10 points higher than all other races.  It seems that Black and Hispanic students are having significantly lower test scores than other races which troubles me as an African-American male.  Next we will look at the breakdown based on English speaking students and English Language learning students.
+```{r Boxplots categorized by Language Prefs}
+p1 <- ggplot(subset(borough_data,Category %in% c("ELL", "Former ELL", "EP") ), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All Students")
+
+p2 <- ggplot(subset(borough_data,Category %in% c("ELL", "Former ELL", "EP") & Subject == "ELA"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in ELA")
+
+p3 <- ggplot(subset(borough_data,Category %in% c("ELL", "Former ELL", "EP") & Subject == "Math"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in Math")
+
+grid.arrange(p1,p2,p3, ncol=2)
+```
+
+The data shows that English proficient students has the highest median scores which is expected.  Given the data, it seems that the barrier of not speaking English is reflective on the test scores outcome.  Former English Language Learners seem to do almost as good as English Proficient students.
+
+```{r}
+p1 <- ggplot(borough_data, aes(Borough,Level1Percentage)) + geom_boxplot() +  ylab("Percentage of Level 1 Students")
+
+p2 <- ggplot(borough_data, aes(Borough,Level2Percentage)) + geom_boxplot() + ylab("Percentage of Level 2 Students")
+
+p3 <- ggplot(borough_data, aes(Borough,Level3Percentage)) + geom_boxplot() + ylab("Percentage of Level 3 Students")
+
+p4 <- ggplot(borough_data, aes(Borough,Level4Percentage)) + geom_boxplot() + ylab("Percentage of Level 4 Students")
+
+p5 <- ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level1Percentage)) + geom_boxplot() +  ylab("Percentage of Level 1 Students")
+
+p6 <- ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level2Percentage)) + geom_boxplot() + ylab("Percentage of Level 2 Students")
+
+p7 <- ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level3Percentage)) + geom_boxplot() + ylab("Percentage of Level 3 Students")
+
+p8 <- ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level4Percentage)) + geom_boxplot() + ylab("Percentage of Level 4 Students")
+
+p9 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Level1Percentage)) + geom_boxplot() +  ylab(" Percentage of Level 1 Students")
+
+p10 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Level2Percentage)) + geom_boxplot() +  ylab(" Percentage of Level 2 Students")
+
+p11 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Level3Percentage)) + geom_boxplot() +  ylab(" Percentage of Level 3 Students")
+
+p12 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Level4Percentage)) + geom_boxplot() +  ylab(" Percentage of Level 4 Students")
+
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12, ncol=4)
+```
+
+I found it interesting that although Queens has relatively the same proportion of Level 2,3 , and 4 , they had the highest median of mean value scores across all the boroughs.  It seems that Females were a lower proportion of Level 1 students and a higher proportion of level 2 ,3 and 4 students than males.  Black students had very large number of Level 1 and 2 students with almost 50% of them Level 1.  Asian students have the lowest median proportion of level 1 and 2 students and the highest median proportion of level 3 and 4 students.  White students had a lower median proportion of level 1 and 2 students in respect to Black and Hispanic students, but had a relatively equal proportion of Level 2 students as well.
+
+```{r FreqPoly Plots, echo=FALSE}
+library(scales)
+p1 <- ggplot(subset(borough_data,Category == c("Female","Male")),aes(Mean.Scale.Score,y=..count../sum(..count..))) + geom_freqpoly(aes(color=Category),binwidth=1) +  ylab("Mean Score for All students") + scale_y_continuous(labels = percent)
+
+p2 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Mean.Scale.Score,y=..count../sum(..count..))) + geom_freqpoly(aes(color=Category), binwidth = 1) +  ylab("Mean Score for All students")+ scale_y_continuous(labels = percent)
+
+p3 <- ggplot(subset(borough_data,Category %in% c("ELL", "Former ELL", "EP") ), aes(Mean.Scale.Score,y=..count../sum(..count..))) + geom_freqpoly(aes(color=Category), binwidth = 1) +  ylab("Mean Score for All students")+ scale_y_continuous(labels = percent)
+
+grid.arrange(p1, p2, p3, ncol=1)
+```
+It looks like females begin to overtake males mean score around 303.  Males peak at around 297 while females peak around 307. Females min mean score seems to fall around 283. White and Asian mean scores begin to become a higher proportion of their students around 310  where it begins to peak and slowly decreases as the mean score amount get increases.  A large proportion of Black and Hispanics' mean scores fall between 280 and 300. Black Students' mean score maxes out around 295. Hispanic Students' mean score maxes out around 305. EP students seem to peak around the same mean score as females do.  ELL students are some what evenly spread between the mean scores' 250 and 290.  There seems to be no represetation of ELL students past 292.
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df <- read.csv("SchoolMathResults20132015_ALL.csv")
+df <- initial_reshape_function(df,"Math")
+
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df1 <- read.csv("SchoolMathResults20132015_ELL.csv")
+df1 <- initial_reshape_function(df1,"Math")
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df2 <- read.csv("SchoolMathResults20132015_Ethnicity.csv")
+df2 <- initial_reshape_function(df2,"Math")
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df3 <- read.csv("SchoolMathResults20132015_Gender.csv")
+df3 <- initial_reshape_function(df3,"Math")
+
+```
+
+```{r}
+math.2013.2015.school <- bind_rows(df,df1)
+math.2013.2015.school <- bind_rows(math.2013.2015.school,df2)
+math.2013.2015.school <- bind_rows(math.2013.2015.school,df3)
+
+rm(df,df1,df2,df3)
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df <- read.csv("SchoolELAResults20132015_ALL.csv")
+df <- initial_reshape_function(df,"ELA")
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df1 <- read.csv("SchoolELAResults20132015_ELL.csv")
+df1 <- initial_reshape_function(df1,"ELA")
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df2 <- read.csv("SchoolELAResults20132015_Ethnicity.csv")
+df2 <- initial_reshape_function(df2,"ELA")
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df3 <- read.csv("SchoolELAResults20132015_Gender.csv")
+df3 <- initial_reshape_function(df3,"ELA")
+```
+
+```{r}
+ela.2013.2015.school <- bind_rows(df,df1)
+ela.2013.2015.school <- bind_rows(ela.2013.2015.school,df2)
+ela.2013.2015.school <- bind_rows(ela.2013.2015.school,df3)
+
+school_data <- bind_rows(math.2013.2015.school,ela.2013.2015.school)
+rm(math.2013.2015.school,ela.2013.2015.school)
 ```
