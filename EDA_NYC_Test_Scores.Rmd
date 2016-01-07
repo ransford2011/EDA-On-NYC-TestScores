@@ -8,6 +8,9 @@ output: html_document
 ```{r Reshaping functions}
 initial_reshape_function <- function(df,s){
   df <- subset(df, df$Grade != "All Grades")
+  df$Grade <- as.integer(df$Grade)
+  #df$Mean.Scale.Score <- as.numeric(df$Mean.Scale.Score)
+  #df$Level1Percentage <- as.numeric(df$Level1Percentage)
   df$Subject <- s
   return(df)
 }
@@ -187,7 +190,11 @@ p3 <- ggplot(subset(borough_data,Category %in% c("ELL", "Former ELL", "EP") ), a
 
 grid.arrange(p1, p2, p3, ncol=1)
 ```
+
+
 It looks like females begin to overtake males mean score around 303.  Males peak at around 297 while females peak around 307. Females min mean score seems to fall around 283. White and Asian mean scores begin to become a higher proportion of their students around 310  where it begins to peak and slowly decreases as the mean score amount get increases.  A large proportion of Black and Hispanics' mean scores fall between 280 and 300. Black Students' mean score maxes out around 295. Hispanic Students' mean score maxes out around 305. EP students seem to peak around the same mean score as females do.  ELL students are some what evenly spread between the mean scores' 250 and 290.  There seems to be no represetation of ELL students past 292.
+
+
 ```{r}
 setwd('C:\\Users\\ransf\\Documents\\SchoolData')
 df <- read.csv("SchoolMathResults20132015_ALL.csv")
@@ -253,4 +260,212 @@ ela.2013.2015.school <- bind_rows(ela.2013.2015.school,df3)
 
 school_data <- bind_rows(math.2013.2015.school,ela.2013.2015.school)
 rm(math.2013.2015.school,ela.2013.2015.school)
+```
+
+
+I thought that it would be good to add a field for for which borough the school resides in so I wrote a function to perform that action.  This is done based on the letter in the DBN number for the school.  "M" is for Manhattan, "K" is for Brooklyn, "X" is for the the Bronx, "Q" is for Queens, and "R" is for Staten Island.
+
+```{r}
+create_borough_vector <- function (v){
+  
+  cond <- grepl(".+M.+",v$DBN,perl = TRUE)
+  v$Borough <- ifelse(cond,"Manhattan","Other Borough")
+  cond <- grepl(".+X.+",v$DBN,perl = TRUE)
+  v$Borough <- ifelse(cond,"Bronx",v$Borough)
+   cond <- grepl(".+K.+",v$DBN,perl = TRUE)
+  v$Borough <- ifelse(cond,"Brooklyn",v$Borough)
+   cond <- grepl(".+Q.+",v$DBN,perl = TRUE)
+  v$Borough <- ifelse(cond,"Queens",v$Borough)
+   cond <- grepl(".+R.+",v$DBN,perl = TRUE)
+  v$Borough <- ifelse(cond,"Staten Island",v$Borough)
+  return(v)
+}
+```
+
+
+
+```{r}
+school_data <- create_borough_vector(school_data)
+
+```
+
+
+Since the percentage of level 1,2,3,4 students is the only continuous value field that is in this datset, I thought it would be fitting for Bivaraiate Analysis.  The first plot is the Mean Score vs. Level1Percentage.
+
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point()
+```
+
+
+Since there is a lot of overplotting, we use the alpha parameter to reduce it.
+
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+
+
+
+```
+
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level2Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level3Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level4Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+
+```
+
+
+```{r}
+p1 <- ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+
+p2 <- ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level2Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+p3 <- ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level3Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+p4 <- ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level4Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+grid.arrange(p1,p2,p3,p4, ncol = 2)
+```
+
+Looking at the Level 1 Percentage plot, we see some interesting trends at the extremes (0 percent and 100 percent).  Schools that tested 0 percent of Level 1 students have mean score range of 300 to 375 whereas schools that tested 100 percent of Level 1 students have mean scores in the range of 225 to 275.  Most schools have Level 1 students within the range of 0 and 70 percent.  There seems to be a strong linear relationship with the number of Level 1 students tested and mean score for the schools in the NYC area.
+
+The plot for the Mean Score vs. Level 2 percenatage is pretty interesting.  It generates an arrow-shaped plot.  There is huge variation in the range of Mean scores for schools who tested students with a Level 2 Percentage of 25 or less.  After the 25 percent threshold, the Mean scores for schools seems to converge to 300.
+
+The plot for the Mean Score vs. Level 3 percentage shows a closer linear relationship.  Most schools tested students with Level 3 percentages in the range of 3 to about 35 percent.  The mean scores within this range fall mostly between 275 and 325.  After the 35 percent threshold, The mean score continues to rise but the number of schools with higher percentages of Level 3 students slowly diminishes.
+
+Most schools have students with Level 4 between 1 and 25 percent.  Even at low number of Level 4 percentages, most mean scores are above 300.  We see that the number of Level 4 students slowly diminishes after 25 percent but the mean scores steadily increases reaching mean scores as high as 380.
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point()  + 
+  geom_line(stat = 'summary',fun.y=mean, color= 'orange') +
+  geom_line(stat = 'summary',fun.y=quantile,probs=0.1,
+            linetype = 2, color='green') +
+  geom_line(stat = 'summary',fun.y=quantile,probs=0.9,
+            linetype = 2, color='green') 
+  
+```
+
+
+```{r}
+p1 <- ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(aes(color = Grade))
+
+p2 <-ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(aes(color = Borough))
+
+p3 <- ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.numeric(Level1Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(aes(color = Year))
+
+
+p4 <- ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.numeric(Level4Percentage), y = as.numeric(Mean.Scale.Score))) + geom_point(alpha = 1/25)
+
+grid.arrange(p1,p2,p3, ncol = 2)
+```
+
+
+Now that we have a good field for the data for the past two years, lets wrangle the older data and combine it with the most recent data to see if we can see any trends.  While looking at the data from 2006-2012, I noticed that the mean scores were higher in the older data than in the 2013-2015 Data.  After doing some searching on the web, I found this [site](http://www.p12.nysed.gov/irs/ela-math/).  The documents here show that the score scales vary year over year, so using the mean scale score will not be very useful when combining data from 2006-2012 with data from 2013-2015.
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df1 <- read.csv("SchoolELAResults20062012Public_ALL.csv")
+df1 <- initial_reshape_function(df1, "ELA")
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df2 <- read.csv("SchoolELAResults20062012Public_ELL.csv")
+df2 <- initial_reshape_function(df2, "ELA")
+
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df3 <- read.csv("SchoolELAResults20062012Public_Gender.csv")
+df3 <- initial_reshape_function(df3, "ELA")
+
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df4 <- read.csv("SchoolELAResults20062012Public_Ethnicity.csv")
+df4 <- initial_reshape_function(df4, "ELA")
+
+ela.2006.2012.data <- bind_rows(df1,df2)
+ela.2006.2012.data <- bind_rows(ela.2006.2012.data,df3)
+ela.2006.2012.data <- bind_rows(ela.2006.2012.data,df4)
+
+```
+
+```{r}
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df1 <- read.csv("SchoolMathResults20062012Public_ALL.csv")
+df1 <- initial_reshape_function(df1, "Math")
+
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df2 <- read.csv("SchoolMathResults20062012Public_ELL.csv")
+df2 <- initial_reshape_function(df2, "Math")
+
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df3 <- read.csv("SchoolMathResults20062012Public_Ethnicity.csv")
+df3 <- initial_reshape_function(df3, "Math")
+
+setwd('C:\\Users\\ransf\\Documents\\SchoolData')
+df4 <- read.csv("SchoolMathResults20062012Public_Gender.csv")
+df4 <- initial_reshape_function(df4, "Math")
+
+math.2006.2012.data <- bind_rows(df1,df2)
+math.2006.2012.data <- bind_rows(math.2006.2012.data, df3)
+math.2006.2012.data <- bind_rows(math.2006.2012.data, df4)
+
+```
+
+```{r}
+school_data.2006.2012 <- bind_rows(ela.2006.2012.data,math.2006.2012.data)
+
+school_data <- bind_rows(school_data,school_data.2006.2012)
+school_data <- create_borough_vector(school_data)
+
+school_data$Grade <- school_data$Grade + 2
+```
+
+After combining all the data from 2006-2015, we have over 630,000 observations.  First we examine the Level1Percentage vs. Number.Tested with aesthetic coloring of the Boroughs.
+```{r}
+p1 <- ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(aes(color = Borough))
+```
+
+Looking at the graph, I notice a large percentage of observations for Bronx and Brooklyn residing between 30 and 80 percent.  These obersavations also seem to fall less than 200 students tested.  Observations for Queens and Staten Island seem to fall below 25 percent when the number of students range from 100 to 500.  It is tough to analyze observations for Manhattan in this plot.  To get a better view, we will generate a plot with only observations for Manhattan
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 & Borough == "Manhattan" ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(aes(color = Borough))
+```
+The plot for Manhattan looks roughly the same as the original: high percentages of Level 1 students for those tested below 200 and lower percentages for those tested more than 200.  Let's do a facet wrap on the data based on Borough to see if this trend is across all boroughs.
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point() + facet_wrap(~Borough)
+```
+
+It seems that across all boroughs, the percentage of Level 1 students decreases after the number of students tested passes a specific threshold.  My suscipsion is that the number of Level 1 students remains constant, but since the population size of students tested increases, they become a smaller percentage.  Let's see if the data supports this hypothesis, but comparing the Level1Count vs Number.Tested faceted over Boroughs
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Count))) + geom_point() + facet_wrap(~Borough)
+```
+
+My hypothesis is somewhat true, but we can in Brooklyn and Queens that the number of Level 1 students decreases as the number of students tested increases.  Let's see how the same plot faceted over years looks like:
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point() + facet_wrap(~Year)
+
+```
+
+The trend seems to be the same from 2006-2012 with a consistent decrease in Level 1 students' percentage from 2006-2009 for population sizes less than 200.  From 2013 to 2015, there are larger percentages of Level 1 students across a wider range of student populations.  This could be due to the change in NY Testing to be more Common Core aligned in 2013 as mentioned in the Notes of the dataset.
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point() + facet_wrap(~Grade)
+```
+
+
+```{r}
+p4 <- ggplot(subset(school_data, school_data$Number.Tested > 5 & Subject == "Math" ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(color="orange")
+
+p5 <- ggplot(subset(school_data, school_data$Number.Tested > 5 & Subject == "ELA" ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(color="red")
+
+grid.arrange(p1,p2,p3,p4,p5,ncol=3)
 ```
