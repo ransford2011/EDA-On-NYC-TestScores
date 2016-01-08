@@ -461,11 +461,52 @@ The trend seems to be the same from 2006-2012 with a consistent decrease in Leve
 ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point() + facet_wrap(~Grade)
 ```
 
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+```
 
 ```{r}
-p4 <- ggplot(subset(school_data, school_data$Number.Tested > 5 & Subject == "Math" ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(color="orange")
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.integer(Number.Tested), y = as.numeric(Level2Percentage))) + geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+```
 
-p5 <- ggplot(subset(school_data, school_data$Number.Tested > 5 & Subject == "ELA" ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(color="red")
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.integer(Number.Tested), y = as.numeric(Level3Percentage))) + geom_point(aes(color=Borough)) + facet_wrap(~Grade)
 
-grid.arrange(p1,p2,p3,p4,p5,ncol=3)
+
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5), aes(x = as.integer(Number.Tested), y = as.numeric(Level4Percentage))) + geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level2Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level3Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level4Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level1Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level2Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level3Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
+```
+
+```{r}
+ggplot(subset(school_data, school_data$Number.Tested > 5 ), aes(x = as.integer(Number.Tested), y = as.numeric(Level4Percentage))) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
 ```
