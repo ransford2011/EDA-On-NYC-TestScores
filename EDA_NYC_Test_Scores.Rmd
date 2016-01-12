@@ -135,11 +135,11 @@ ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian"
 
 
 ```{r}
-p2 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian") & Subject == "ELA"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in ELA")
+ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian") & Subject == "ELA"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in ELA")
 ```
 
 ```{r}
-p3 <- ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian") & Subject == "Math"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in Math")
+ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian") & Subject == "Math"), aes(Category,Mean.Scale.Score)) + geom_boxplot() +  ylab("Mean Score for All students in Math")
 ```
 
 The data shows that Asian students outperform all other races in all categories.  The median score is for Asian students is at least 10 points higher than all other races.  It seems that Black and Hispanic students are having significantly lower test scores than other races which troubles me as an African-American male.  Next we will look at the breakdown based on English speaking students and English Language learning students.
@@ -176,6 +176,9 @@ ggplot(borough_data, aes(Borough,Level3Percentage)) + geom_boxplot() + ylab("Per
 ggplot(borough_data, aes(Borough,Level4Percentage)) + geom_boxplot() + ylab("Percentage of Level 4 Students")
 ```
 
+
+I found it interesting that although Queens has relatively the same proportion of Level 2,3 , and 4 , they had the highest median of mean value scores across all the boroughs. 
+
 ```{r}
 ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level1Percentage)) + geom_boxplot() +  ylab("Percentage of Level 1 Students")
 ```
@@ -191,6 +194,8 @@ ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level2
 ```{r}
 ggplot(subset(borough_data,Category == c("Female", "Male")), aes(Category,Level4Percentage)) + geom_boxplot() + ylab("Percentage of Level 4 Students")
 ```
+
+It seems that Females were a lower proportion of Level 1 students and a higher proportion of level 2 ,3 and 4 students than males. 
 
 ```{r}
 ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Level1Percentage)) + geom_boxplot() +  ylab(" Percentage of Level 1 Students")
@@ -208,8 +213,7 @@ ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian"
 ggplot(subset(borough_data,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(Category,Level4Percentage)) + geom_boxplot() +  ylab(" Percentage of Level 4 Students")
 ```
 
-
-I found it interesting that although Queens has relatively the same proportion of Level 2,3 , and 4 , they had the highest median of mean value scores across all the boroughs.  It seems that Females were a lower proportion of Level 1 students and a higher proportion of level 2 ,3 and 4 students than males.  Black students had very large number of Level 1 and 2 students with almost 50% of them Level 1.  Asian students have the lowest median proportion of level 1 and 2 students and the highest median proportion of level 3 and 4 students.  White students had a lower median proportion of level 1 and 2 students in respect to Black and Hispanic students, but had a relatively equal proportion of Level 2 students as well.
+  Black students had very large number of Level 1 and 2 students with almost 50% of them Level 1.  Asian students have the lowest median proportion of level 1 and 2 students and the highest median proportion of level 3 and 4 students.  White students had a lower median proportion of level 1 and 2 students in respect to Black and Hispanic students, but had a relatively equal proportion of Level 2 students as well.
 
 ```{r FreqPoly Plots, echo=FALSE}
 library(scales)
@@ -390,29 +394,6 @@ The plot for the Mean Score vs. Level 3 percentage shows a closer linear relatio
 
 Most schools have students with Level 4 between 1 and 25 percent.  Even at low number of Level 4 percentages, most mean scores are above 300.  We see that the number of Level 4 students slowly diminishes after 25 percent but the mean scores steadily increases reaching mean scores as high as 380.
 
-```{r}
-ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + geom_point()  + 
-  geom_line(stat = 'summary',fun.y=mean, color= 'orange') +
-  geom_line(stat = 'summary',fun.y=quantile,probs=0.1,
-            linetype = 2, color='green') +
-  geom_line(stat = 'summary',fun.y=quantile,probs=0.9,
-            linetype = 2, color='green') 
-  
-```
-
-
-```{r}
-p1 <- ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + geom_point(aes(color = Grade))
-
-p2 <-ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + geom_point(aes(color = Borough))
-
-p3 <- ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + geom_point(aes(color = Year))
-
-
-grid.arrange(p1,p2,p3, ncol = 2)
-```
-
-
 Now that we have a good field for the data for the past two years, lets wrangle the older data and combine it with the most recent data to see if we can see any trends.  While looking at the data from 2006-2012, I noticed that the mean scores were higher in the older data than in the 2013-2015 Data.  After doing some searching on the web, I found this [site](http://www.p12.nysed.gov/irs/ela-math/).  The documents here show that the score scales vary year over year, so using the mean scale score will not be very useful when combining data from 2006-2012 with data from 2013-2015.
 
 #Analyzing Test Data on a School-level Granulatrity 2006-2015
@@ -505,9 +486,6 @@ ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + geom_point()
 
 The trend seems to be the same from 2006-2012 with a consistent decrease in Level 1 students' percentage from 2006-2009 for population sizes less than 200.  From 2013 to 2015, there are larger percentages of Level 1 students across a wider range of student populations.  This could be due to the change in NY Testing to be more Common Core aligned in 2013 as mentioned in the Notes of the dataset.
 
-```{r}
-ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + geom_point() + facet_wrap(~Grade)
-```
 
 ```{r}
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + geom_point(aes(color=Borough)) + facet_wrap(~Grade)
@@ -527,6 +505,10 @@ ggplot(school_data,aes(x = Number.Tested, y = Level3Percentage)) + geom_point(ae
 ggplot(school_data,aes(x = Number.Tested, y = Level4Percentage)) + geom_point(aes(color=Borough)) + facet_wrap(~Grade)
 ```
 
+For Level 1 students, there seems to be a higher concentration of Bronx schools with a high percentage level 1 students in Grades 4 and 5, but seems to diminish in grades 7 and 8.  In grades 3-5, the distribution seems fairly uniform across the number.tested.  In contrast, for grades 6-8, there seems to be a decreasing trend in percentage of level 1 students as the number of tested increases.  For Level 2 students, there seems to be large proportion around the 50 percent mark across all grades.  For Level 3 students, Brooklyn has neatly condensed between ranges 25-75% for grades 3-5 and more scatteredly distributed in the higher grades.  You start to see more Queens and Staten Island observation points in the higher percentages in this plot.  Brooklyn has a noticable concentration of points in the higher percentage end in grades 6-8 and the Bronx is mostly concentrated on the low end of the percentage scale across all grades.  In Level 4 students, we see a lot more points representing Manhattan.  There is a good concentration of Manhattan schools at the higher percentage end for all grades.  Staten Island has dense concentration around 50-75% in grades 3-5 and more scatteredly distributed on the low percentage side in the higher grades.  Brooklyn has a high percentage of Level 4 students in grades 6-8 and Queens has high percentage of level 4 students across all grades.
+
+The graphs tells us that the Bronx seems to have schools that struggle with standardized tests across all grades, Brooklyn may have struggling elementary schools, but has a good number of middle schools that perform well on standardized tests, Manhattan and Queens have  schools that perform well in both elementary and middle and Staten Island has a lot of elementary schools that perform well, but their middle school performance varies.
+
 ```{r}
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
 ```
@@ -542,6 +524,8 @@ ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) + geom_point(a
 ```{r}
 ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
 ```
+
+2009 seems to be year for testing as their was high concentration of lower percentage of level 1 students, and a high concentration of higher percentage of level 3 students.  We can see there was a big disruption in the distribution of test scores from 2013 when NYC decided to align more with the Common Core Standards. 8 graders seems to be having a difficult time with the standardized test as they dominate a large proportion in level 1 and 2 students. 6th and 7th graders seem to be doing the best over the years as they have large concentration of Level 3 and 4 students. 3rd and 6th graders seem to have weathered the change in Test standards in 2013.  There is a dense concentration of Level 4 students in grades 3-5 from 2006-2009 but seems to dwindle after that. 
 
 ```{r}
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
@@ -559,8 +543,9 @@ ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) + geom_point(a
 ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) + geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
 ```
 
+Performance seems to be good from grades 3-7, but falls drastically in 8th grade.  Grades 4-6 seems to be the top performers in ELA. 8th grades seems to have large concentration of Level 1 and 2 students in both subjects.
 ```{r}
-school_data_group <- subset(school_data, school_data$Number.Tested > 5 ) %>% group_by(DBN,Year,Grade) %>% summarise(Level1MeanPercent = mean(Level1Percentage), Level2MeanPercent = mean(Level2Percentage),Level3MeanPercent = mean(Level3Percentage),Level4MeanPercent = mean(Level4Percentage), n = n())
+school_data_group <- school_data %>% group_by(DBN,Year,Grade) %>% summarise(Level1MeanPercent = mean(Level1Percentage), Level2MeanPercent = mean(Level2Percentage),Level3MeanPercent = mean(Level3Percentage),Level4MeanPercent = mean(Level4Percentage), n = n())
 
 school_data_group <- create_borough_vector(school_data_group)                                                                 
                                                                  
