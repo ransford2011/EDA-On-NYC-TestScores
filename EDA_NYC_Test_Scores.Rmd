@@ -551,6 +551,7 @@ school_data_group <- create_borough_vector(school_data_group)
                                                                  
 ```
 
+I have created another dataset which has the average percentages across all levels of students.  Let's analyze this dataset to see if it gives us any additional insight.
 ```{r}
 ggplot(school_data_group, aes(x = Level1MeanPercent)) + geom_freqpoly(aes(color = Borough)) + facet_wrap(~Year)
                                                                                           
@@ -571,6 +572,12 @@ ggplot(school_data_group, aes(x = Level4MeanPercent)) + geom_freqpoly(aes(color 
                                                                                           
 ```
 
+The first I notice is how the Level 1 and 4 data is skewed and the Level 2 and 3 data is fairly normalized.  The average percent of  Level 1 students seems to be similarly distributed across all boroughs, but there is more distinction in the Level 2 data.  Queens and Staten Island distributions' mean are before 25 percent from 2006-2009, but align with boroughs' distributions from 2010 onwards. The Bronx's normal distribution slowly shifts right each year up until 2013, then the mean value shifts back left and stays there from 2013-2015.  Manhattan's mean oscillates left from 2006-2009 then to the right from 2010-2012 and stablizes from 2013-2015.
+
+In the Level 3 Data, we can see why 2009 seems to be the best year across them all as there are a large count of schools that have average percent of greater than 50% across all boroughs.  The trend shows that 2006-2009 had high average percentages of Level 3 students, but that trend decreases each year afterwards.
+
+The average percentage of Level 4 students is below 25% for all boroughs across all years.
+
 ```{r}
 ggplot(school_data_group, aes(x = Level1MeanPercent)) + geom_freqpoly(aes(color = Borough)) + facet_wrap(~Grade)
 ```
@@ -588,6 +595,9 @@ ggplot(school_data_group, aes(x = Level3MeanPercent)) + geom_freqpoly(aes(color 
 ggplot(school_data_group, aes(x = Level4MeanPercent)) + geom_freqpoly(aes(color = Borough)) + facet_wrap(~Grade)
 ```
 
+3-5th graders had a larger number of schools with low percentage averages for Level 1 students and Level 2 students (< 50%) and a high number of high percentage averages of Level 3 students.  The number of Level 4 students with averages percentages greater than 25% are larger in 3rd-5th graders than 6-8th graders.
+
+6-8th grade students have a large number of schools with average percentages around 50% for Level 2 students and average percentages around 20-35% for Level 3 students.
 
 ```{r}
 ggplot(school_data_group, aes(y = Level1MeanPercent, x = Borough)) + geom_boxplot()
@@ -606,6 +616,8 @@ ggplot(school_data_group, aes(y = Level3MeanPercent, x = Borough)) + geom_boxplo
 ggplot(school_data_group, aes(y = Level4MeanPercent, x = Borough)) + geom_boxplot()
 ```    
 
+The median value for average mean percentages are roughly equivalent for Level 1, 2, and 3 students.  The median value for average mean percentages are equivalent for Bronx, Brooklyn, and Manhattan for Level 4 students, whereas the median value for average mean percentages are roughly equal for Queens and Staten Island.
+
 ```{r}
 ggplot(school_data_group, aes(y = Level1MeanPercent, x = factor(Year))) + geom_boxplot()
 ```
@@ -622,6 +634,8 @@ ggplot(school_data_group, aes(y = Level3MeanPercent, x = factor(Year))) + geom_b
 ggplot(school_data_group, aes(y = Level4MeanPercent, x = factor(Year))) + geom_boxplot()
 ```
 
+Plot support the claim that 2009 was the best year amongst them all showing lower median average percentages for Level 1 and 2 students and higher median average percentages for Level 3 and 4 students.  Level 1 and 3 plots shows the most drastic changes across the years.  In the Level 1 plot, the median values decrease over 2006-2009, then increased and remain constant from 2010-2012 and then increases sharply and remains constant from 2013-2015.  The inverse trend is shown for Level 3 students.
+
 ```{r}
 ggplot(school_data_group, aes(y = Level1MeanPercent, x = factor(Grade))) + geom_boxplot()
 ```
@@ -637,3 +651,15 @@ ggplot(school_data_group, aes(y = Level3MeanPercent, x = factor(Grade))) + geom_
 ```{r}
 ggplot(school_data_group, aes(y = Level4MeanPercent, x = factor(Grade))) + geom_boxplot()
 ```
+
+The median value across grades is roughly equilvalent across all grades with a slight lower value for grades 3-5 for Level 1 and 2 students and slightly higher value for grades 3-5 for Level 3 and 4 students.
+
+#Final Plots and Summary
+
+#Reflection
+
+Where did I run into difficulties in the analysis?
+
+Where did I find successes?
+
+How could the analysis be enriched in future work?
