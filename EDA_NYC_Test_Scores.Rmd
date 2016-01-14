@@ -660,32 +660,28 @@ The median value across grades is roughly equivalent across all grades with a sl
 
 ##Plot One
 ```{r, echo=FALSE}
-ggplot(school_data, aes(x = factor(Year), y = as.numeric(Level3And4Percentage)/100)) + geom_boxplot(aes(fill = factor(Year))) + scale_y_continuous(labels = percent) + theme(legend.position = "none") + xlab("Year") + ylab("Students who reached a passing level") + ggtitle("Percentage of Students who reached a passing level from 2006-2015")
+suppressWarnings(ggplot(school_data, aes(x = factor(Year), y = as.numeric(Level3And4Percentage)/100)) + geom_boxplot(aes(fill = factor(Year))) + scale_y_continuous(labels = percent) + theme(legend.position = "none") + xlab("Year") + ylab("Students who are proficient for their grade") + ggtitle("Percentage of Proficient Students from 2006-2015"))
 ```
 
 ##Description One
+It is shown that 2009 had the highest median percentage value of proficient students over all the years where the IQR for 2009 falls between 63% and 89%.  From 2006-2009 the median percentage of proficient students lies above 50% and falls below 50% from 2010-2011.  After the sharp decline in 2013, the median percentage value reaches 25% in 2015.  From 2013-2015, 75% of the schools have less than a 50% proficient students according to the standards.
 
 ##Plot Two
 ```{r, echo=FALSE}
-ggplot(subset(school_data ,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(x = as.numeric(Level3And4Percentage)/100, y = ..count../sum(..count..))) + geom_freqpoly(aes(color = Category)) + scale_x_continuous(labels = percent) + xlab("Students who reached a passing level") + ylab("Percentage of Schools") + ggtitle("Percentage of Schools vs. Percentage of Students who passed from 2006-2015 (By race)") + scale_y_continuous(labels = percent) 
+suppressWarnings(ggplot(subset(school_data ,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(x = as.numeric(Level3And4Percentage)/100, y = ..count../sum(..count..))) + geom_freqpoly(aes(color = Category)) + scale_x_continuous(labels = percent) + xlab("Students who are proficient for their grade") + ylab("Percentage of Schools") + ggtitle("Percentage of Proficient Students by Race") + scale_y_continuous(labels = percent)) 
 ```
 
 ##Description Two
-
+The trends for Black and Hispanic students are roughly the same.  The trends for White and Asian students also follow the same pattern.  If we look at the trend lines for Black and Hispanic students vs. White and Asian Students, we can see the interception point occurring around the 80% proficient mark.   
 
 ##Plot Three
 ```{r, echo=FALSE}
-ggplot(school_data, aes(y = as.numeric(Level3And4Percentage)/100, x = Borough)) + geom_boxplot(aes(fill = Borough))+ scale_y_continuous(labels = percent)
+suppressWarnings(ggplot(school_data, aes(y = as.numeric(Level3And4Percentage)/100, x = Borough)) + geom_boxplot(aes(fill = Borough))+ scale_y_continuous(labels = percent) + theme(legend.position = "none") + ylab("Students who are proficient for their grade") + ggtitle("Percentage of Proficient Students from 2006-2015"))
 ```
 
 ##Description Three
-
+The IQR for Manhattan falls almost exactly between 25 and 75% giving it the largest IQR across all boroughs.  75% of the Bronx schools have less than a 55% proficient rate for its students.
 
 
 #Reflection
-
-Where did I run into difficulties in the analysis?
-
-Where did I find successes?
-
-How could the analysis be enriched in future work?
+Analyzing the NYC Test data gave me quite some insight about their education system. Given that my fiancée and my 11 year old stepson reside in the Bronx, I had a lot of interest in finding out how well the test scores were in the Bronx borough.  Although I was not pleased with my findings, I'm was not surprised.  The Bronx is one of the most impoverished and economically challenged boroughs in New York City.  I ran into a roadblock when I wanted to try to correlate the Borough Test Data with the budget funding for each school to see if there was any relationship with lower test scores in lower funded schools.  There is no dataset provided and no API to access and retrieve this information.  To retrieve this information, I would have to perform some Screen Scraping tasks to generate this info using the way the HTML accesses this information.  To do this for tens of thousands of schools didn't seem like the best thing to do given the time constraint.  I also ran into a roadblock when I noticed that the data type for the percentages in the data from 2006-2012 was different than the percentages in 2012-2013.  Thus I had to write separate functions to wrangle the datasets before combining them.  My final roadblock was when I discovered that the Mean Scores varied over years, thus it would not be a reliable metric to measure when analyzing data over the years.  This is why I stop analyzing it once I combined the earlier data with the 2013-2015 dataset.  I did have success with the many ways the data was broken down (Gender, Race, Borough, English Learner, Grade, etc.) which allowed me to look at the data through different categories.  For future work, I would like to look at the top 10 performing schools and the bottom 10 performing schools and see if there is any insight that I can find as to why the top 10 schools performs so well and the bottom 10 are not doing so well.  This could be analyzed on Borough-by-borough basis or grade level basis. Also, there seem to be a breakdown on test scores once students reached 8th grade that would need some further investigation as well.  Finally, I would like to get more insight as to why Black and Hispanic students are not performing as well as their White and Asian student counterparts.  This is very important to me as an African-American male who faced the same disconnect when growing up in the city of Atlanta, Georgia.
