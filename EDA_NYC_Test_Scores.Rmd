@@ -656,6 +656,30 @@ The median value across grades is roughly equilvalent across all grades with a s
 
 #Final Plots and Summary
 
+##Plot One
+```{r, echo=FALSE}
+ggplot(school_data, aes(x = factor(Year), y = as.numeric(Level3And4Percentage)/100)) + geom_boxplot(aes(fill = factor(Year))) + scale_y_continuous(labels = percent) + theme(legend.position = "none") + xlab("Year") + ylab("Students who reached a passing level") + ggtitle("Percentage of Students who reached a passing level from 2006-2015")
+```
+
+##Description One
+
+##Plot Two
+```{r, echo=FALSE}
+ggplot(subset(school_data ,Category %in% c("Black", "White", "Hispanic", "Asian")), aes(x = as.numeric(Level3And4Percentage)/100, y = ..count../sum(..count..))) + geom_freqpoly(aes(color = Category)) + scale_x_continuous(labels = percent) + xlab("Students who reached a passing level") + ylab("Percentage of Schools") + ggtitle("Percentage of Schools vs. Percentage of Students who passed from 2006-2015 (By race)") + scale_y_continuous(labels = percent) 
+```
+
+##Description Two
+
+
+##Plot Three
+```{r, echo=FALSE}
+ggplot(school_data, aes(y = as.numeric(Level3And4Percentage)/100, x = Borough)) + geom_boxplot(aes(fill = Borough))+ scale_y_continuous(labels = percent)
+```
+
+##Description Three
+
+
+
 #Reflection
 
 Where did I run into difficulties in the analysis?
