@@ -94,6 +94,7 @@ p4 <- ggplot(subset(borough_data, Category == "All Students"), aes(x = Level4Per
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
 
+The percentage seems to peak around 27% for Level 1 students, around 36% for Level 2 students, around 23% for Level 3 students, and 7% for Level 4 students.  All the distributions seem to be roughly normal, especially for the Level 1, 2, and 3 percentages.
 
 ```{r FreqPoly Plots, echo=FALSE, fig.height=12}
 
@@ -557,7 +558,17 @@ ggplot(subset(school_data, Borough == "Manhattan" ),
 ```
 
 
-The plot for Manhattan looks roughly the same as the original: high percentages of Level 1 students for those tested below 200 and lower percentages for those tested more than 200.  Let's do a facet wrap on the data based on Borough to see if this trend is across all boroughs.
+The plot for Manhattan looks roughly the same as the original: high percentages of Level 1 students for those tested below 200 and lower percentages for those tested more than 200. Let's see how the observations are distributed
+
+```{r}
+table(school_data$Borough)
+```
+
+Given the number of observations that belong to Manhattan, it seems that its lack of points in the original scatterplot is due to overplotting.
+
+
+Let's do a facet wrap on the data based on Borough to see if this trend is across all boroughs.
+
 
 ```{r geom_point_plot_6, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + 
@@ -579,73 +590,99 @@ ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
 
 ```
 
-The trend seems to be the same from 2006-2012 with a consistent decrease in Level 1 students' percentage from 2006-2009 for population sizes less than 200.  From 2013 to 2015, there are larger percentages of Level 1 students across a wider range of student populations.  This could be due to the change in NY Testing to be more Common Core aligned in 2013 as mentioned in the Notes of the dataset.
+The trend seems to be the same from 2006-2012 with a consistent decrease in Level 1 students' percentage from 2006-2009 for population sizes less than 200.  From 2013 to 2015, there are larger percentages of Level 1 students across a wider range of student populations.  This could be due to the change in NY Testing to be more Common Core aligned in 2013 as mentioned in the Notes of the dataset.  Let's analyze the Student Level percentages across each borough for each grade.  Given that "Number.Tested" is one of the few continuous scale metrics in this dataset, we use this so that we can a have more randomly distributed plots (versus the discrete values like "Year" and "Grade").
 
 
 ```{r geom_point_plot_9, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level1Percentage,school_data$Grade, summary)
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
-  geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+  geom_point(aes(color=Borough)) + scale_color_brewer(palette = "Set1") + facet_wrap(~Grade)
 ```
 
-```{r geom_point_plot_10, cache=TRUE,cache.path= 'cache/', fig.path='figure/'} 
+For Level 1 students, there seems to be a higher concentration of Bronx schools with a high percentage level 1 students in Grades 4 and 5, but seems to diminish in grades 7 and 8.  In grades 3-5, the distribution seems fairly uniform across the number.tested.  In contrast, for grades 6-8, there seems to be a decreasing trend in percentage of level 1 students as the number of tested increases. 
+
+```{r geom_point_plot_10, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level2Percentage,school_data$Grade, summary)
 ggplot(school_data, aes(x = Number.Tested, y = Level2Percentage)) +
-  geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+  geom_point(aes(color=Borough)) + scale_color_brewer(palette = "Set1") + facet_wrap(~Grade)
 ```
+
+For Level 2 students, there seems to be large proportion around the 50 percent mark across all grades. 
 
 ```{r geom_point_plot_11, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level3Percentage,school_data$Grade, summary)
 ggplot(school_data,aes(x = Number.Tested, y = Level3Percentage)) +
-  geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+  geom_point(aes(color=Borough)) + scale_color_brewer(palette = "Set1") + facet_wrap(~Grade)
 
 
 ```
+
+For Level 3 students, Brooklyn is neatly condensed between ranges 25-75% for grades 3-5 and has a more scattered distribution in the higher grades.  You start to see more Queens and Staten Island observation points in the higher percentages in this plot.  Brooklyn has a noticeable concentration of points in the higher percentage end in grades 6-8 and the Bronx is mostly concentrated on the low end of the percentage scale across all grades. 
 
 ```{r geom_point_plot_12, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level4Percentage,school_data$Grade, summary)
 ggplot(school_data,aes(x = Number.Tested, y = Level4Percentage)) +
-  geom_point(aes(color=Borough)) + facet_wrap(~Grade)
+  geom_point(aes(color=Borough)) + scale_color_brewer(palette = "Set1") + facet_wrap(~Grade)
 ```
 
-For Level 1 students, there seems to be a higher concentration of Bronx schools with a high percentage level 1 students in Grades 4 and 5, but seems to diminish in grades 7 and 8.  In grades 3-5, the distribution seems fairly uniform across the number.tested.  In contrast, for grades 6-8, there seems to be a decreasing trend in percentage of level 1 students as the number of tested increases.  For Level 2 students, there seems to be large proportion around the 50 percent mark across all grades.  For Level 3 students, Brooklyn is neatly condensed between ranges 25-75% for grades 3-5 and has a more scattered distribution in the higher grades.  You start to see more Queens and Staten Island observation points in the higher percentages in this plot.  Brooklyn has a noticeable concentration of points in the higher percentage end in grades 6-8 and the Bronx is mostly concentrated on the low end of the percentage scale across all grades.  In Level 4 students, we see a lot more points representing Manhattan.  There is a good concentration of Manhattan schools at the higher percentage end for all grades.  Staten Island has dense concentration around 50-75% in grades 3-5 and more scattered distribution on the low percentage side in the higher grades.  Brooklyn has a high percentage of Level 4 students in grades 6-8 and Queens has high percentage of level 4 students across all grades.
+In Level 4 students, we see a lot more points representing Manhattan.  There is a good concentration of Manhattan schools at the higher percentage end for all grades.  Staten Island has dense concentration around 50-75% in grades 3-5 and more scattered distribution on the low percentage side in the higher grades.  Brooklyn has a high percentage of Level 4 students in grades 6-8 and Queens has high percentage of level 4 students across all grades.  Now let us investigate the student level percentages across each grade for each year to see how students performed in each grade over time.
 
 ```{r geom_point_plot_13, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level1Percentage,school_data$Year, summary)
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Year)
 ```
+
+2009 seems to be the best year for testing as there was a high concentration of low percentage of level 1 students.  This is also supported by statistic information that shows that 75% of the observations in 2009 have less than 4.5% students who tested at Level 1.  In 2013, when the test changed, there was a big shift in the data where the median percentage for students at Level 1 reaching almost 37%.
 
 ```{r geom_point_plot_14, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level2Percentage,school_data$Year, summary)
 ggplot(school_data,aes(x = Number.Tested, y = Level2Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Year)
 ```
+
+The percentage of students at level 2 is pretty vast across all years except 2009.  8th graders seem to be the most prevalent illustrated by the plots.  6th graders had noticeably high percentages of students at level 2 in 2013 and 2014 as well.
 
 ```{r geom_point_plot_15, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level3Percentage,school_data$Year, summary)
 ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Year)
 ```
+
+We can see large percentages of schools having majority of their students reach level 3 until the downturn in 2013.  From the statistical information, we can see the downturn being very drastic. 3rd and 7th graders seem to have dealt with the Common Core change in the test the better than the other grades.
 
 ```{r geom_point_plot_16, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
+by(school_data$Level4Percentage,school_data$Year, summary)
 ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Year)
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Year)
 ```
 
-2009 seems to be the best year for testing as there was a high concentration of low percentage of level 1 students, and a high concentration of high percentage of level 3 students.  We can see there was a big disruption in the distribution of test scores from 2013 when NYC decided to align more with the Common Core Standards. 8th graders seem to be having a difficult time with the standardized test as they dominate a large proportion in level 1 and 2 students. 6th and 7th graders seem to be doing the best over the years as they have large concentration of Level 3 and 4 students. 3rd and 6th graders seem to have weathered the change in Test standards in 2013.  There is a dense concentration of Level 4 students in grades 3-5 from 2006-2009 but seems to dwindle after that.
+The percentage of students testing at level 4 reached its peak in 2009 where the IQR was 22.50 and median percentage was 8.3%.  There are good amount of 6th and 7th grade classes who reached level 4 at a high percentage across all years.
 
-```{r}
-ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
-```
+We can see there was a big disruption in the distribution of test scores from 2013 when NYC decided to align more with the Common Core Standards. 8th graders seem to be having a difficult time with the standardized test as they dominate a large proportion in level 1 and 2 students. 6th and 7th graders seem to be doing the best over the years as they have large concentration of Level 3 and 4 students. 3rd and 6th graders seem to have weathered the change in Test standards in 2013.  There is a dense concentration of Level 4 students in grades 3-5 from 2006-2009 but seems to dwindle after that.  It would be interesting to see how students in each grade performance was in respect to each subject.
 
-```{r}
-ggplot(school_data, aes(x = Number.Tested, y = Level2Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
-```
+```{r, fig.width= 12}
+p1 <- ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Subject)
 
-```{r}
-ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
-```
+p2 <- ggplot(school_data, aes(x = Number.Tested, y = Level2Percentage)) +
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Subject)
 
-```{r}
-ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) +
-  geom_point(aes(color=factor(Grade))) + facet_wrap(~Subject)
+p3 <- ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) +
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Subject)
+
+p4 <- ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) +
+  geom_point(aes(color=factor(Grade))) + scale_color_brewer(palette = "Set2") + 
+  facet_wrap(~Subject)
+
+grid.arrange(p1,p2,p3,p4, ncol = 2)
 ```
 
 Performance seems to be good from grades 3-7, but falls drastically in 8th grade.  Grades 4-6 seems to be the top performers in ELA. 8th graders seem to have a large concentration of Level 1 and 2 students in both subjects.
