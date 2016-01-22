@@ -148,9 +148,9 @@ do.  ELL students are somewhat evenly spread between the mean scores' 250 and
 290.  There seems to be no representation of ELL students past 292.
 
 Since most of the variables within the dataset are categorical variables,
-Let's analyze how the plots over gender, and race.
+Let's analyze how the plots over gender, and race.  First we generate the 
+histograms for each level for females.
 
-Let's look at histograms for Females
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Female"), 
@@ -173,7 +173,24 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Males
+Each level seems to have somewhat of a normal distribution with the mean value
+ being around 25% for level 1, 36% for level 2, 22% for level 3, and 12% for 
+ level 4.  Let us perform some summary statistics to see if the mean and median 
+ values indicate a normal distribution. 
+```{r}
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level1Percentage))
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level2Percentage))
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level3Percentage))
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level4Percentage))
+```
+ 
+The summary statistics do indeed show a normal distribution.  My estimates for 
+the level 3 and level 4 mean values were fairly close to the exact values as 
+well.  Let's look at histograms for males across the different levels.
 
 ```{r, fig.height=12, fig.width=12}
 
@@ -197,7 +214,21 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for African-Americans
+The distributions are roughly the same as the female distributions.  Let us see
+if the summary statistics tell a different story.
+```{r}
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level1Percentage))
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level2Percentage))
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level3Percentage))
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level4Percentage))
+```
+
+The summary statistics seem to agree with my inference. Let's look at histograms 
+by race starting with African Americans.
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Black"), 
@@ -220,7 +251,9 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Hispanics
+We can see that there are high counts of observations in the level 1 and 2 plots
+where the mean is almost 50% for African Americans in level 1.Let's see how the 
+data for Hispanics looks like.
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Hispanic"), 
@@ -243,7 +276,8 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for White students
+The plot are very similar to those of African Americans.Let's look at histograms 
+for White students
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "White"), 
@@ -266,7 +300,9 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Asian students
+There is a noticable decrease in the distribution of White students who fall in 
+the level 1 and 2 category and a larger distribution of level 3 and 4 students.
+Finally, we look at histograms for Asian students
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Asian"), 
@@ -288,6 +324,11 @@ p4 <- ggplot(subset(borough_data, Category == "Asian"),
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
+
+Asian students have a much lower distribution in the level 1 category, but their
+level 2 and 3 distributions are roughly equivalent to those of white students.
+Where asian students really stand out, is in the level 4 category where there 
+are observations where 60% of the asian students were in the level 4 category.
 
 ##Bivariate Analysis and Plots
 ```{r Analyzing Borough Data, echo=FALSE}
