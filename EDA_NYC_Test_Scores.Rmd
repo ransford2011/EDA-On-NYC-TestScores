@@ -89,19 +89,19 @@ library(gridExtra)
 
 p1 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
@@ -148,146 +148,187 @@ do.  ELL students are somewhat evenly spread between the mean scores' 250 and
 290.  There seems to be no representation of ELL students past 292.
 
 Since most of the variables within the dataset are categorical variables,
-Let's analyze how the plots over gender, and race.
+Let's analyze how the plots over gender, and race.  First we generate the 
+histograms for each level for females.
 
-Let's look at histograms for Females
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Males
+Each level seems to have somewhat of a normal distribution with the mean value
+ being around 25% for level 1, 36% for level 2, 22% for level 3, and 12% for 
+ level 4.  Let us perform some summary statistics to see if the mean and median 
+ values indicate a normal distribution. 
+```{r}
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level1Percentage))
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level2Percentage))
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level3Percentage))
+with(subset(borough_data, Category == "Female"), 
+     summary(borough_data$Level4Percentage))
+```
+ 
+The summary statistics do indeed show a normal distribution.  My estimates for 
+the level 3 and level 4 mean values were fairly close to the exact values as 
+well.  Let's look at histograms for males across the different levels.
 
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for African-Americans
+The distributions are roughly the same as the female distributions.  Let us see
+if the summary statistics tell a different story.
+```{r}
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level1Percentage))
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level2Percentage))
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level3Percentage))
+with(subset(borough_data, Category == "Male"), 
+     summary(borough_data$Level4Percentage))
+```
+
+The summary statistics seem to agree with my inference. Let's look at histograms 
+by race starting with African Americans.
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Hispanics
+We can see that there are high counts of observations in the level 1 and 2 plots
+where the mean is almost 50% for African Americans in level 1.Let's see how the 
+data for Hispanics looks like.
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for White students
+The plot are very similar to those of African Americans.Let's look at histograms 
+for White students
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Asian students
+There is a noticable decrease in the distribution of White students who fall in 
+the level 1 and 2 category and a larger distribution of level 3 and 4 students.
+Finally, we look at histograms for Asian students
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
+
+Asian students have a much lower distribution in the level 1 category, but their
+level 2 and 3 distributions are roughly equivalent to those of white students.
+Where asian students really stand out, is in the level 4 category where there 
+are observations where 60% of the asian students were in the level 4 category.
 
 ##Bivariate Analysis and Plots
 ```{r Analyzing Borough Data, echo=FALSE}
@@ -579,170 +620,100 @@ school_data <- create_borough_vector(school_data)
 
 ```
 
+Let's have a look at the breakdown of the various levels given the data at the 
+school level.
 ```{r,fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(school_data, Category == "All Students"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(school_data, Category == "All Students"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(school_data, Category == "All Students"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(school_data, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
 
-Let's look at histograms for Females
+Level 1 distribution is fairly uniform between 25-50% and tapers off afterwards.
+It still has somewhat of a uniform distribution.  Level 2 distribution is normal
+with the median value around 37%.  The level 3 distribution median's value seems
+to falls around 13% it seems.  The level 4 distribution is long-tailed.  To get
+a better view, we transform the histogram to use the log scale.  
+
+```{r}
+ggplot(subset(school_data, Category == "All Students"), 
+             aes(x = Level4Percentage)) + 
+  geom_histogram(fill='green', binwidth=1, color = 'black') + scale_y_log10()
+```
+
+Although the largest portion of schools have 0% of students who tested at level 
+4, there are still some good portion of other schools that had a substiantial
+percentage of their students who tested at level 4 as well.  It is a lot easier
+to see the actual distribution with the log scale.  For all the other histograms
+, we generate the level 4 percentage histograms with the log scale 
+transformation. Nex we look at histograms for Females:
 
 ```{r,fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(school_data, Category == "Female"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(school_data, Category == "Female"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(school_data, Category == "Female"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(school_data, Category == "Female"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')+ scale_y_log10()
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
 
-
-Let's look at histograms for Males
+The distributions for the females are roughly the same as the distributions 
+for all students.  There are a large number of 0% entries for levels 1 and 3.
+Let's look at histograms for Males:
 
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(school_data, Category == "Male"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(school_data, Category == "Male"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
+  geom_histogram(fill='red', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(school_data, Category == "Male"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(school_data, Category == "Male"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
+  geom_histogram(fill='green', binwidth=1, color = 'black')+ scale_y_log10()
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-Let's look at histograms for Blacks
+The distributions are the roughly the same as females.  There is not much 
+different insight than what was shown in the borugh univariate analysis; 
+the data is just more fine-grained.  Let's see what the data tells us from the 
+bivariate analysis.
 
-```{r, fig.height=12, fig.width=12}
-
-p1 <- ggplot(subset(school_data, Category == "Black"), 
-             aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p2 <- ggplot(subset(school_data, Category == "Black"), 
-             aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p3 <- ggplot(subset(school_data, Category == "Black"), 
-             aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-p4 <- ggplot(subset(school_data, Category == "Black"), 
-             aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-
-```
-
-Let's look at histograms for Hispanics
-
-```{r, fig.height=12, fig.width=12}
-
-p1 <- ggplot(subset(school_data, Category == "Hispanic"), 
-             aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p2 <- ggplot(subset(school_data, Category == "Hispanic"), 
-             aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p3 <- ggplot(subset(school_data, Category == "Hispanic"), 
-             aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-p4 <- ggplot(subset(school_data, Category == "Hispanic"), 
-             aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-
-```
-
-Let's look at histograms for Whites
-
-```{r, fig.height=12, fig.width=12}
-
-p1 <- ggplot(subset(school_data, Category == "White"), 
-             aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p2 <- ggplot(subset(school_data, Category == "White"), 
-             aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p3 <- ggplot(subset(school_data, Category == "White"), 
-             aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-p4 <- ggplot(subset(school_data, Category == "White"), 
-             aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-
-```
-
-Let's look at histograms for Asians
-
-```{r, fig.height=12, fig.width=12}
-
-p1 <- ggplot(subset(school_data, Category == "Asian"), 
-             aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p2 <- ggplot(subset(school_data, Category == "Asian"), 
-             aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1)
-
-p3 <- ggplot(subset(school_data, Category == "Asian"), 
-             aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-p4 <- ggplot(subset(school_data, Category == "Asian"), 
-             aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1)
-
-grid.arrange(p1,p2,p3,p4, ncol=2)
-
-```
 
 
 ##Bivariate Analysis on School-Level Data 2013-2015
