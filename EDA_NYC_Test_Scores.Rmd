@@ -741,17 +741,17 @@ Since there is a lot of over plotting, we use the alpha parameter to reduce it.
 
 ```{r geom_point_plot_2, cache=TRUE,cache.path= 'cache/',fig.path='figure/',fig.height = 12, fig.width =14}
 p1 <- ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + 
-  geom_point(alpha = 1/25)
+  geom_point(alpha = 1/25) + geom_smooth(method = 'lm', color= 'red')
 
 
 p2 <- ggplot(school_data, aes(x = Level2Percentage, y = Mean.Scale.Score)) + 
-  geom_point(alpha = 1/25)
+  geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
 p3 <- ggplot(school_data, aes(x = Level3Percentage, y = Mean.Scale.Score)) + 
-  geom_point(alpha = 1/25)
+  geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
 p4 <- ggplot(school_data, aes(x = Level4Percentage, y = Mean.Scale.Score)) + 
-  geom_point(alpha = 1/25)
+  geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
 grid.arrange(p1,p2,p3,p4,ncol=2)
 ```
@@ -1012,11 +1012,14 @@ ggplot(school_data, aes(x = Grade, y = Level1Percentage)) +
             color = 'pink')
 ```
 
-For Level 1 students, there seems to be a higher concentration of Bronx schools 
-with a high percentage level 1 students in Grades 4 and 5, but seems to diminish
-in grades 7 and 8.  In grades 3-5, the distribution seems fairly uniform across 
-the number.tested.  In contrast, for grades 6-8, there seems to be a decreasing 
-trend in percentage of level 1 students as the number of tested increases. 
+There seems to be a higher concentration of Bronx and Manhattan schools 
+with a high percentage of students who tested at level 1 across all grades 
+whereas Brooklyn, Queens, and Staten Island have relatively low percentage of 
+students who tested at level 1.  Looking at the 90th quantile line 
+(dotted **yellow** line at the top), we can see that its lowest point was in 
+4th grade and it steadlily increased up to 7th grade and then decreased in 
+8th grade. The median (**pink**) and the mean (**black**) lines appear to be
+fairly uniform.
 
 ```{r geom_point_plot_10, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level2Percentage,school_data$Grade, summary)
@@ -1035,8 +1038,15 @@ ggplot(school_data, aes(x = Grade, y = Level2Percentage)) +
 
 ```
 
-For Level 2 students, there seems to be large proportion around the 50 percent 
-mark across all grades. 
+There is a more noticeable prescense of Staten Island schools 3rd-5th grades 
+from25% and below.  I find it interesting that their are considerable number of 
+Manhattan schools at the higher percentages and lower percentages in 6th-8th 
+grades.  Brooklyn and Queens schools seems to fall majority between the 10th and 
+the 90th quantiles. The median and mean lines are almost perfectly aligned which
+suggests a normal distribution between the level 2 percentages across each grade.
+It is also noticable how the number of students who tested at level 2 increases 
+over each grade which is seen by the summary lines as well as the summary 
+statistics.
 
 ```{r geom_point_plot_11, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level3Percentage,school_data$Grade, summary)
@@ -1054,12 +1064,10 @@ ggplot(school_data, aes(x = Grade, y = Level3Percentage)) +
             color = 'pink')
 ```
 
-For Level 3 students, Brooklyn is neatly condensed between ranges 25-75% for 
-grades 3-5 and has a more scattered distribution in the higher grades.  You 
-start to see more Queens and Staten Island observation points in the higher 
-percentages in this plot.  Brooklyn has a noticeable concentration of points 
-in the higher percentage end in grades 6-8 and the Bronx is mostly concentrated 
-on the low end of the percentage scale across all grades. 
+There is a slight decreasing trend from elementary to middle school shown.
+Most of Staten Island and Queens schools fall between the 50th and 90th 
+quantiles. The Bronx and Manhattan schools fall closely around the 10th quantile.
+Manhattan also has decent number of schools above the 90th quantile as well.
 
 ```{r geom_point_plot_12, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level4Percentage,school_data$Grade, summary)
@@ -1078,14 +1086,11 @@ ggplot(school_data, aes(x = Grade, y = Level4Percentage)) +
 
 ```
 
-In Level 4 students, we see a lot more points representing Manhattan.  There is 
-a good concentration of Manhattan schools at the higher percentage end for all 
-grades.  Staten Island has dense concentration around 50-75% in grades 3-5 and 
-more scattered distribution on the low percentage side in the higher grades.  
-Brooklyn has a high percentage of Level 4 students in grades 6-8 and Queens has 
-high percentage of level 4 students across all grades.  Now let us investigate 
-the student level percentages across each grade for each year to see how 
-students performed in each grade over time.
+The 90th quantile seems to peak in 4th grade and descend onwards. Staten Island, 
+Queens, and Manhattan have a high concentration of schools that fall above the 
+90th quantile.  Given the concentration of Manhattan schools above the 90 
+quantile range, I'm surprised that Manhattan didn't have the highest median 
+range across all boroughs.
 
 ```{r geom_point_plot_13, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level1Percentage,school_data$Year, summary)
@@ -1103,12 +1108,12 @@ ggplot(school_data, aes(x = Year, y = Level1Percentage)) +
             color = 'red')
 ```
 
-2009 seems to be the best year for testing as there was a high concentration of 
-low percentage of level 1 students.  This is also supported by statistic 
-information that shows that 75% of the observations in 2009 have less than 4.5% 
-students who tested at Level 1.  In 2013, when the test changed, there was a big
-shift in the data where the median percentage for students at Level 1 reaching 
-almost 37%.
+2009 has the lowest concentration of students who tested at level 1. There is a 
+downward trend from 2006 - 2009.  Spikes can be seen in years 2010 and 2013 with 
+largest increase occurring when the NYC became more aligned with the Common Core 
+Standards. 8th graders have the higher percentages of students testing at level 
+1 from 2006-2008.  6th graders were at the higher percentages in 2009, followed 
+by a mix of all grades at the higher percentages from 2010 onwards.
 
 ```{r geom_point_plot_14, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level2Percentage,school_data$Year, summary)
@@ -1126,10 +1131,10 @@ ggplot(school_data, aes(x = Year, y = Level2Percentage)) +
             color = 'red')
 ```
 
-The percentage of students at level 2 is pretty vast across all years except 
-2009.  8th graders seem to be the most prevalent illustrated by the plots.  
-6th graders had noticeably high percentages of students at level 2 in 2013 and 
-2014 as well.
+6th and 8th graders are largely concentrated in the higher percentages from 
+2006-2012.  4th and 6th graders are at the higher percentages from 2013-2015.  
+3rd, 4th and 7th graders fall between the median and the 10th quantile across 
+most years.
 
 ```{r geom_point_plot_15, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level3Percentage,school_data$Year, summary)
@@ -1147,10 +1152,12 @@ ggplot(school_data, aes(x = Year, y = Level3Percentage)) +
             color = 'red')
 ```
 
-We can see large percentages of schools having majority of their students reach
-level 3 until the downturn in 2013.  From the statistical information, we can 
-see the downturn being very drastic. 3rd and 7th graders seem to have dealt 
-with the Common Core change in the test the better than the other grades.
+3rd,4th and 7th graders have majority of their students concentrated in the 
+higher percentages across all years whereas 6th and 8th graders are more 
+concentrated around the lower percentages.  I find it interesting that the 
+students seem to struggle once transitioning into middle school and in their 
+last year of middle school.  But the 7th grade students seem to be doing quite 
+well.
 
 ```{r geom_point_plot_16, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level4Percentage,school_data$Year, summary)
@@ -1167,22 +1174,11 @@ ggplot(school_data, aes(x = Year, y = Level4Percentage)) +
   geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
             color = 'red')
 ```
+Trend lines show an increase from 2006-2009, decreases from 2010-2011, slight 
+increase in 2012, then falls sharply in 2013. 3rd and 4th graders are 
+concentrated at 25% and above in 2006 and 2007.  4th and 6th graders are at the 
+higher percentages 2009-2015.
 
-The percentage of students testing at level 4 reached its peak in 2009 where 
-the IQR was 22.50 and median percentage was 8.3%.  There are good amount of 
-6th and 7th grade classes who reached level 4 at a high percentage across all 
-years.
-
-We can see there was a big disruption in the distribution of test scores from 
-2013 when NYC decided to align more with the Common Core Standards. 8th graders 
-seem to be having a difficult time with the standardized test as they dominate 
-a large proportion in level 1 and 2 students. 6th and 7th graders seem to be 
-doing the best over the years as they have large concentration of Level 3 and 
-4 students. 3rd and 6th graders seem to have weathered the change in Test 
-standards in 2013.  There is a dense concentration of Level 4 students in 
-grades 3-5 from 2006-2009 but seems to dwindle after that.  It would be 
-interesting to see how students in each grade performance was in respect to 
-each subject.
 
 ```{r, fig.width= 12}
 p1 <- ggplot(school_data, aes(x = Grade, y = Level1Percentage)) +
@@ -1240,9 +1236,10 @@ p4 <- ggplot(school_data, aes(x = Grade, y = Level4Percentage)) +
 grid.arrange(p1,p2,p3,p4, ncol = 2)
 ```
 
-Performance seems to be good from grades 3-7, but falls drastically in 8th 
-grade.  Grades 4-6 seems to be the top performers in ELA. 8th graders seem to 
-have a large concentration of Level 1 and 2 students in both subjects.
+Most of the students tested within levels 1-3 in the ELA portion of the test.  
+The Math scores are at all levels, but more students tested at levels 3 and 4 
+in Math than in ELA.  It would be fair to conclude that more students tested 
+well in Math than in ELA given the data.
 
 
 I have created another dataset which has the average percentages across all 
