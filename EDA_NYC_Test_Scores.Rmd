@@ -76,6 +76,8 @@ rm(ela.2013.2015,math.2013.2015)
 rm(df, df1, df2, df3)
 ```
 
+I retrieved the datasets from the NYC Open Data Portal.  You can find the 
+data-sets at various granularities [here](http://schools.nyc.gov/Accountability/data/TestResults/ELAandMathTestResults).  
 To get things started, let's analyze the data across each 
 Borough from 2013-2015.  Analyzing at the Borough level gives us a high level 
 view before we do more in-depth analysis at the school level in the latter 
@@ -276,8 +278,8 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 ```
 
-The plot are very similar to those of African Americans.Let's look at histograms 
-for White students
+The plots are very similar to those of African Americans.  Let's look at 
+histograms for White students
 ```{r, fig.height=12, fig.width=12}
 
 p1 <- ggplot(subset(borough_data, Category == "White"), 
@@ -327,8 +329,8 @@ grid.arrange(p1,p2,p3,p4, ncol=2)
 
 Asian students have a much lower distribution in the level 1 category, but their
 level 2 and 3 distributions are roughly equivalent to those of white students.
-Where asian students really stand out, is in the level 4 category where there 
-are observations where 60% of the asian students were in the level 4 category.
+Where Asian students really stand out is in the level 4 category where there 
+are observations where 60% of the Asian students were in the level 4 category.
 
 ##Bivariate Analysis and Plots
 ```{r Analyzing Borough Data, echo=FALSE}
@@ -384,9 +386,10 @@ ggplot(subset(borough_data,Category == c("Female", "Male") &
 ```
 
 
-The plots show that Females outperform the males in both Math and ELA.  
-The difference in median scores between males and females is significant. Now 
-let's look at the breakdown by race across all boroughs.
+The plots show that Females outperform the males in both Math and ELA.  The 
+difference in median scores between males and females appears to be significant, 
+in particular in the ELA and the overall performance. Now let's look at the 
+breakdown by race across all boroughs.
 
 ```{r Boxplots categorized by race, echo=FALSE}
 ggplot(subset(borough_data,Category %in% 
@@ -409,11 +412,12 @@ p2 <- ggplot(subset(borough_data,Category %in%
 grid.arrange(p1,p2,ncol=2)
 ```
 
-The data shows that Asian students outperform all other races in all categories.  
-The median score for Asian students is at least 10 points higher than all other 
-races.  It seems that Black and Hispanic students are having significantly lower 
-test scores than other races.  Next we will look at the breakdown based on 
-English speaking students and English Language learning students.
+The data shows that Asian students outperform all other races in all 
+categories.  The median score for Asian students is at least 10 points higher 
+than all other races.  It seems that Black and Hispanic students are having 
+significantly lower test scores than other races.  Next we will look at the 
+breakdown based on English speaking students and English Language learning 
+students.
 
 
 ```{r Boxplots categorized by Language Prefs}
@@ -440,6 +444,7 @@ The data shows that English proficient students had the highest median scores
 which is expected.  Given the data, it seems that the barrier of not speaking 
 English is reflective on the test scores outcome.  Former English Language 
 Learners seem to do almost as good as English Proficient students.
+
 ```{r fig.width=12, fig.height=10}
 p1 <- ggplot(borough_data, aes(Borough,Level1Percentage)) + 
   geom_boxplot() +  ylab("Percentage of Level 1 Students")
@@ -508,10 +513,10 @@ grid.arrange(p1,p2,p3,p4,ncol=2)
 
  Black students had very large number of Level 1 and 2 students with almost 
  50% of them Level 1.  Asian students had the lowest median proportion of level 
- 1 and 2 students and the highest median proportion of level 3 and 4 students.  
- White students had a lower median proportion of level 1 and 2 students in 
- respect to Black and Hispanic students, but had a relatively equal proportion 
- of Level 2 students as well.
+ 1 and 2 students and the highest median proportion of level 3 and 4 
+ students.  White students had a lower median proportion of level 1 and 2 
+ students in respect to Black and Hispanic students, but had a relatively equal 
+ proportion of students at all levels compare to Asian students.
 
 
 
@@ -537,7 +542,8 @@ initial_reshape_school_data <- function(df,s){
   df$Level3Percentage <- as.character(df$Level3Percentage)
   df$Level4Percentage <- as.character(df$Level4Percentage)
   
-  df$Mean.Scale.Score <- as.numeric(df$Mean.Scale.Score)
+  df$Mean.Scale.Score <- as.character(df$Mean.Scale.Score)
+  df$Mean.Scale.Score <- as.integer(df$Mean.Scale.Score)
   df$Level1Percentage <- as.numeric(df$Level1Percentage)
   df$Level2Percentage <- as.numeric(df$Level2Percentage)
   df$Level3Percentage <- as.numeric(df$Level3Percentage)
@@ -588,7 +594,7 @@ ela.2013.2015.school <- bind_rows(df,df1)
 ela.2013.2015.school <- bind_rows(ela.2013.2015.school,df2)
 ela.2013.2015.school <- bind_rows(ela.2013.2015.school,df3)
 
-school_data <- bind_rows(math.2013.2015.school,ela.2013.2015.school)
+school_data.2013.2015 <- bind_rows(math.2013.2015.school,ela.2013.2015.school)
 rm(math.2013.2015.school,ela.2013.2015.school)
 ```
 
@@ -616,27 +622,29 @@ create_borough_vector <- function (v){
 
 
 ```{r}
-school_data <- create_borough_vector(school_data)
+school_data.2013.2015 <- create_borough_vector(school_data.2013.2015)
 
 ```
 
-Let's have a look at the breakdown of the various levels given the data at the 
-school level.
+Now that have analyzed the data at the borough level, let's have a look at the 
+breakdown of the various levels given the data at the school level. We start 
+with the data from 2013-2015 initially.
+
 ```{r,fig.height=12, fig.width=12}
 
-p1 <- ggplot(subset(school_data, Category == "All Students"), 
+p1 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level1Percentage)) + 
   geom_histogram(fill='red', binwidth = 1, color = 'black')
 
-p2 <- ggplot(subset(school_data, Category == "All Students"), 
+p2 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level2Percentage)) + 
   geom_histogram(fill='red', binwidth = 1, color = 'black')
 
-p3 <- ggplot(subset(school_data, Category == "All Students"), 
+p3 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level3Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black')
 
-p4 <- ggplot(subset(school_data, Category == "All Students"), 
+p4 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black')
 
@@ -650,7 +658,7 @@ to falls around 13% it seems.  The level 4 distribution is long-tailed.  To get
 a better view, we transform the histogram to use the log scale.  
 
 ```{r}
-ggplot(subset(school_data, Category == "All Students"), 
+ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black') + scale_y_log10()
 ```
@@ -664,19 +672,19 @@ transformation. Nex we look at histograms for Females:
 
 ```{r,fig.height=12, fig.width=12}
 
-p1 <- ggplot(subset(school_data, Category == "Female"), 
+p1 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level1Percentage)) + 
   geom_histogram(fill='red', binwidth = 1, color = 'black')
 
-p2 <- ggplot(subset(school_data, Category == "Female"), 
+p2 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level2Percentage)) + 
   geom_histogram(fill='red', binwidth = 1, color = 'black')
 
-p3 <- ggplot(subset(school_data, Category == "Female"), 
+p3 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level3Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black')
 
-p4 <- ggplot(subset(school_data, Category == "Female"), 
+p4 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level4Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black')+ scale_y_log10()
 
@@ -689,19 +697,19 @@ Let's look at histograms for Males:
 
 ```{r, fig.height=12, fig.width=12}
 
-p1 <- ggplot(subset(school_data, Category == "Male"), 
+p1 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level1Percentage)) + 
   geom_histogram(fill='red', binwidth = 1, color = 'black')
 
-p2 <- ggplot(subset(school_data, Category == "Male"), 
+p2 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level2Percentage)) + 
   geom_histogram(fill='red', binwidth = 1, color = 'black')
 
-p3 <- ggplot(subset(school_data, Category == "Male"), 
+p3 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level3Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black')
 
-p4 <- ggplot(subset(school_data, Category == "Male"), 
+p4 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level4Percentage)) + 
   geom_histogram(fill='green', binwidth=1, color = 'black')+ scale_y_log10()
 
@@ -731,7 +739,7 @@ Analysis.  The first plot is the Mean Score vs. Level1Percentage.
 
 
 ```{r geom_point_plot_1, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
-ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + 
+ggplot(school_data.2013.2015, aes(x = Level1Percentage, y = Mean.Scale.Score)) + 
   geom_point()
 ```
 
@@ -740,17 +748,17 @@ Since there is a lot of over plotting, we use the alpha parameter to reduce it.
 
 
 ```{r geom_point_plot_2, cache=TRUE,cache.path= 'cache/',fig.path='figure/',fig.height = 12, fig.width =14}
-p1 <- ggplot(school_data, aes(x = Level1Percentage, y = Mean.Scale.Score)) + 
+p1 <- ggplot(school_data.2013.2015, aes(x = Level1Percentage, y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25) + geom_smooth(method = 'lm', color= 'red')
 
 
-p2 <- ggplot(school_data, aes(x = Level2Percentage, y = Mean.Scale.Score)) + 
+p2 <- ggplot(school_data.2013.2015, aes(x = Level2Percentage, y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
-p3 <- ggplot(school_data, aes(x = Level3Percentage, y = Mean.Scale.Score)) + 
+p3 <- ggplot(school_data.2013.2015, aes(x = Level3Percentage, y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
-p4 <- ggplot(school_data, aes(x = Level4Percentage, y = Mean.Scale.Score)) + 
+p4 <- ggplot(school_data.2013.2015, aes(x = Level4Percentage, y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
 grid.arrange(p1,p2,p3,p4,ncol=2)
@@ -789,7 +797,12 @@ scores were higher in the older data than in the 2013-2015 Data.  After doing
 some searching on the web, I found this 
 [site](http://www.p12.nysed.gov/irs/ela-math/).  The documents here show that 
 the score scales vary year over year, so using the mean scale score will not be 
-very useful when combining data from 2006-2012 with data from 2013-2015.
+very useful when combining data from 2006-2012 with data from 2013-2015. The 
+site also discusses what it means to test at specific levels.  Students that 
+test at level 1 are well below the proficient standards in their grade.  Students 
+that test at level 2 are partially proficient in their grade.  Students that 
+test at level 3 are proficient at their grade, and students that test at level
+4 excel above the proficient standards. 
 
 ```{r}
 setwd('C:\\Users\\ransf\\OneDrive\\Documents\\GitHub\\EDA-On-NYC-TestScores\\SchoolData')
@@ -837,7 +850,7 @@ math.2006.2012.data <- bind_rows(math.2006.2012.data, df4)
 ```{r}
 school_data.2006.2012 <- bind_rows(ela.2006.2012.data,math.2006.2012.data)
 
-school_data <- bind_rows(school_data,school_data.2006.2012)
+school_data <- bind_rows(school_data.2013.2015,school_data.2006.2012)
 school_data <- create_borough_vector(school_data)
 
 ```
@@ -890,7 +903,7 @@ p4 <- ggplot(school_data_group, aes(y = Level4MeanPercent, x = factor(Year))) +
 grid.arrange(p1,p2,p3,p4,ncol=2)
 ```
 
-These plot support the claim that 2009 was the best year amongst them all 
+These plots support the claim that 2009 was the best year amongst them all 
 showing lower median average percentages for Level 1 and 2 students and higher 
 median average percentages for Level 3 and 4 students.  Level 1 and 3 plots 
 show the most drastic changes across the years.  In the Level 1 plot, the 
@@ -944,7 +957,8 @@ ggplot(subset(school_data, Borough == "Manhattan" ),
 
 The plot for Manhattan looks roughly the same as the original: high percentages 
 of Level 1 students for those tested below 200 and lower percentages for those 
-tested more than 200. Let's see how the observations are distributed
+tested more than 200. Let's see how the observations are distributed across 
+boroughs.
 
 ```{r}
 table(school_data$Borough)
@@ -976,8 +990,15 @@ ggplot(school_data, aes(x = Number.Tested, y = as.integer(Level1Count))) +
 ```
 
 My hypothesis is somewhat true, but we can see in Brooklyn and Queens that the 
-number of Level 1 students decrease as the number of students tested increases.
-Let's see how the same plot faceted over years looks like:
+number of Level 1 students decrease as the number of students tested increases.  Let's see what the correlation test shows:
+
+```{r}
+cor.test(school_data$Number.Tested,as.integer(school_data$Level1Count))
+```
+
+The correlation test shows that I was somewhat true, as their is some correlation 
+between Number tested and Level1 count, but it is not a strong correlation.  Let's 
+see how the same plot faceted over years looks like:
 
 ```{r geom_point_plot_8, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + 
@@ -991,10 +1012,9 @@ From 2013 to 2015, there are larger percentages of Level 1 students across a
 wider range of student populations.  This could be due to the change in NY 
 Testing to be more Common Core aligned in 2013 as mentioned in the Notes of 
 the dataset.  Let's analyze the Student Level percentages across each borough 
-for each grade.  Given that "Number.Tested" is one of the few continuous scale 
-metrics in this dataset, we use this so that we can a have more randomly 
-distributed plots (versus the discrete values like "Year" and "Grade").
-
+for each grade.  Let us analyze how students testing at various levels over 
+different grade levels.  I plot the median, mean, 10th, and 90th quantile trend 
+lines as well.
 
 ```{r geom_point_plot_9, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level1Percentage,school_data$Grade, summary)
@@ -1039,9 +1059,9 @@ ggplot(school_data, aes(x = Grade, y = Level2Percentage)) +
 ```
 
 There is a more noticeable prescense of Staten Island schools 3rd-5th grades 
-from25% and below.  I find it interesting that their are considerable number of 
+from 25% and below.  I find it interesting that there are considerable number of 
 Manhattan schools at the higher percentages and lower percentages in 6th-8th 
-grades.  Brooklyn and Queens schools seems to fall majority between the 10th and 
+grades.  Brooklyn and Queens schools seems to fall mostly between the 10th and 
 the 90th quantiles. The median and mean lines are almost perfectly aligned which
 suggests a normal distribution between the level 2 percentages across each grade.
 It is also noticable how the number of students who tested at level 2 increases 
@@ -1067,7 +1087,7 @@ ggplot(school_data, aes(x = Grade, y = Level3Percentage)) +
 There is a slight decreasing trend from elementary to middle school shown.
 Most of Staten Island and Queens schools fall between the 50th and 90th 
 quantiles. The Bronx and Manhattan schools fall closely around the 10th quantile.
-Manhattan also has decent number of schools above the 90th quantile as well.
+Manhattan also has a decent number of schools above the 90th quantile as well.
 
 ```{r geom_point_plot_12, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level4Percentage,school_data$Grade, summary)
@@ -1132,9 +1152,9 @@ ggplot(school_data, aes(x = Year, y = Level2Percentage)) +
 ```
 
 6th and 8th graders are largely concentrated in the higher percentages from 
-2006-2012.  4th and 6th graders are at the higher percentages from 2013-2015.  
-3rd, 4th and 7th graders fall between the median and the 10th quantile across 
-most years.
+2006-2012.  4th and 6th graders are at the higher percentages from 
+2013-2015.  3rd, 4th and 7th graders fall between the median and the 10th 
+quantile across most years.
 
 ```{r geom_point_plot_15, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level3Percentage,school_data$Year, summary)
@@ -1174,6 +1194,7 @@ ggplot(school_data, aes(x = Year, y = Level4Percentage)) +
   geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
             color = 'red')
 ```
+
 Trend lines show an increase from 2006-2009, decreases from 2010-2011, slight 
 increase in 2012, then falls sharply in 2013. 3rd and 4th graders are 
 concentrated at 25% and above in 2006 and 2007.  4th and 6th graders are at the 
@@ -1236,14 +1257,15 @@ p4 <- ggplot(school_data, aes(x = Grade, y = Level4Percentage)) +
 grid.arrange(p1,p2,p3,p4, ncol = 2)
 ```
 
-Most of the students tested within levels 1-3 in the ELA portion of the test.  
-The Math scores are at all levels, but more students tested at levels 3 and 4 
-in Math than in ELA.  It would be fair to conclude that more students tested 
-well in Math than in ELA given the data.
+Most of the students tested within levels 1-3 in the ELA portion of the 
+test.  The Math scores are at all levels, but more students tested at levels 
+3 and 4 in Math than in ELA.  It would be fair to conclude that more students 
+tested well in Math than in ELA given the data.
 
 
 I have created another dataset which has the average percentages across all 
-levels of students.  Let's analyze this dataset to see if it gives us any 
+levels of students using the **summarise** function.  Let's analyze average 
+percentages across the various levels to see if it gives us any 
 additional insight.
 
 ```{r}
@@ -1406,7 +1428,11 @@ see if there is any insight that I can find as to why the top 10 schools
 performs so well and the bottom 10 are not doing so well.  This could be 
 analyzed on Borough-by-borough basis or grade level basis. Also, there seem 
 to be a breakdown on test scores once students reached 8th grade that would 
-need some further investigation as well.  Finally, I would like to get more 
-insight as to why Black and Hispanic students are not performing as well as 
-their White and Asian student counterparts.  This is very important to me as an African-American male who faced the same disconnect when growing up in the 
-city of Atlanta, Georgia.
+need some further investigation as well.  I also would like to overlay the data 
+onto a google map so that we can visualize in what locations are schools doing 
+well and which areas need more attention.  I attempted to do this, but found it 
+difficult to find a dataset with the geospatial data for all of the 
+schools.  Finally, I would like to get more insight as to why Black and Hispanic 
+students are not performing as well as their White and Asian student 
+counterparts.  This is very important to me as an African-American male who 
+faced the same disconnect when growing up in the city of Atlanta, Georgia.
