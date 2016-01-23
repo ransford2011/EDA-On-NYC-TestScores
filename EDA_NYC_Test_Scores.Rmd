@@ -998,11 +998,18 @@ distributed plots (versus the discrete values like "Year" and "Grade").
 
 ```{r geom_point_plot_9, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level1Percentage,school_data$Grade, summary)
-ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
-  geom_point(alpha = 1/ 7, aes(color=Borough)) + 
+ggplot(school_data, aes(x = Grade, y = Level1Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=Borough)) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set1") + 
   guides(color = guide_legend(override.aes = list(alpha = 1))) +
-  facet_wrap(~Grade)
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'pink')
 ```
 
 For Level 1 students, there seems to be a higher concentration of Bronx schools 
@@ -1013,11 +1020,19 @@ trend in percentage of level 1 students as the number of tested increases.
 
 ```{r geom_point_plot_10, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level2Percentage,school_data$Grade, summary)
-ggplot(school_data, aes(x = Number.Tested, y = Level2Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=Borough)) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Grade, y = Level2Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=Borough)) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set1") + 
-  facet_wrap(~Grade)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'pink')
+
 ```
 
 For Level 2 students, there seems to be large proportion around the 50 percent 
@@ -1025,13 +1040,18 @@ mark across all grades.
 
 ```{r geom_point_plot_11, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level3Percentage,school_data$Grade, summary)
-ggplot(school_data,aes(x = Number.Tested, y = Level3Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=Borough)) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Grade, y = Level3Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=Borough)) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set1") + 
-  facet_wrap(~Grade)
-
-
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'pink')
 ```
 
 For Level 3 students, Brooklyn is neatly condensed between ranges 25-75% for 
@@ -1043,11 +1063,19 @@ on the low end of the percentage scale across all grades.
 
 ```{r geom_point_plot_12, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level4Percentage,school_data$Grade, summary)
-ggplot(school_data,aes(x = Number.Tested, y = Level4Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=Borough)) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Grade, y = Level4Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=Borough)) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set1") + 
-  facet_wrap(~Grade)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'yellow') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'pink')
+
 ```
 
 In Level 4 students, we see a lot more points representing Manhattan.  There is 
@@ -1061,11 +1089,18 @@ students performed in each grade over time.
 
 ```{r geom_point_plot_13, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level1Percentage,school_data$Year, summary)
-ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Year, y = Level1Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Grade))) + 
+  scale_x_continuous(breaks = seq(2006,2015,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Year)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 ```
 
 2009 seems to be the best year for testing as there was a high concentration of 
@@ -1077,11 +1112,18 @@ almost 37%.
 
 ```{r geom_point_plot_14, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level2Percentage,school_data$Year, summary)
-ggplot(school_data,aes(x = Number.Tested, y = Level2Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Year, y = Level2Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Grade))) + 
+  scale_x_continuous(breaks = seq(2006,2015,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Year)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 ```
 
 The percentage of students at level 2 is pretty vast across all years except 
@@ -1091,11 +1133,18 @@ The percentage of students at level 2 is pretty vast across all years except
 
 ```{r geom_point_plot_15, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level3Percentage,school_data$Year, summary)
-ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Year, y = Level3Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Grade))) + 
+  scale_x_continuous(breaks = seq(2006,2015,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Year)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 ```
 
 We can see large percentages of schools having majority of their students reach
@@ -1105,11 +1154,18 @@ with the Common Core change in the test the better than the other grades.
 
 ```{r geom_point_plot_16, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 by(school_data$Level4Percentage,school_data$Year, summary)
-ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+ggplot(school_data, aes(x = Year, y = Level4Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Grade))) + 
+  scale_x_continuous(breaks = seq(2006,2015,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Year)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 ```
 
 The percentage of students testing at level 4 reached its peak in 2009 where 
@@ -1129,29 +1185,57 @@ interesting to see how students in each grade performance was in respect to
 each subject.
 
 ```{r, fig.width= 12}
-p1 <- ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+p1 <- ggplot(school_data, aes(x = Grade, y = Level1Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Subject))) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Subject)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 
-p2 <- ggplot(school_data, aes(x = Number.Tested, y = Level2Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+p2 <- ggplot(school_data, aes(x = Grade, y = Level2Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Subject))) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Subject)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 
-p3 <- ggplot(school_data, aes(x = Number.Tested, y = Level3Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+p3 <- ggplot(school_data, aes(x = Grade, y = Level3Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Subject))) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Subject)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 
-p4 <- ggplot(school_data, aes(x = Number.Tested, y = Level4Percentage)) +
-  geom_point(alpha = 1/ 7,aes(color=factor(Grade))) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+p4 <- ggplot(school_data, aes(x = Grade, y = Level4Percentage)) +
+  geom_jitter(alpha = 1/ 7, aes(color=factor(Subject))) + 
+  scale_x_continuous(breaks = seq(3,8,1)) +
   scale_color_brewer(palette = "Set2") + 
-  facet_wrap(~Subject)
+  guides(color = guide_legend(override.aes = list(alpha = 1))) +
+  geom_line(stat = 'summary', fun.y = mean, color = 'black') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.9, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.1, linetype = 2,
+            color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, probs = 0.5, linetype = 2,
+            color = 'red')
 
 grid.arrange(p1,p2,p3,p4, ncol = 2)
 ```
