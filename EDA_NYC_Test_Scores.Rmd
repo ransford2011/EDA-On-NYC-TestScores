@@ -91,19 +91,19 @@ library(gridExtra)
 
 p1 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
@@ -157,19 +157,19 @@ histograms for each level for females.
 
 p1 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Female"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
@@ -198,19 +198,19 @@ well.  Let's look at histograms for males across the different levels.
 
 p1 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Male"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
@@ -235,19 +235,19 @@ by race starting with African Americans.
 
 p1 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Black"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
@@ -260,19 +260,19 @@ data for Hispanics looks like.
 
 p1 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Hispanic"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
@@ -284,19 +284,19 @@ histograms for White students
 
 p1 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "White"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
@@ -309,19 +309,19 @@ Finally, we look at histograms for Asian students
 
 p1 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(borough_data, Category == "Asian"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
@@ -634,19 +634,19 @@ with the data from 2013-2015 initially.
 
 p1 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
@@ -660,7 +660,7 @@ a better view, we transform the histogram to use the log scale.
 ```{r}
 ggplot(subset(school_data.2013.2015, Category == "All Students"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black') + scale_y_log10()
+  geom_histogram(fill='white', binwidth=1, color = 'black') + scale_y_log10()
 ```
 
 Although the largest portion of schools have 0% of students who tested at level 
@@ -674,19 +674,19 @@ transformation. Nex we look at histograms for Females:
 
 p1 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(school_data.2013.2015, Category == "Female"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')+ scale_y_log10()
+  geom_histogram(fill='white', binwidth=1, color = 'black')+ scale_y_log10()
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 ```
@@ -699,19 +699,19 @@ Let's look at histograms for Males:
 
 p1 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level1Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p2 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level2Percentage)) + 
-  geom_histogram(fill='red', binwidth = 1, color = 'black')
+  geom_histogram(fill='white', binwidth = 1, color = 'black')
 
 p3 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level3Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')
+  geom_histogram(fill='white', binwidth=1, color = 'black')
 
 p4 <- ggplot(subset(school_data.2013.2015, Category == "Male"), 
              aes(x = Level4Percentage)) + 
-  geom_histogram(fill='green', binwidth=1, color = 'black')+ scale_y_log10()
+  geom_histogram(fill='white', binwidth=1, color = 'black')+ scale_y_log10()
 
 grid.arrange(p1,p2,p3,p4, ncol=2)
 
