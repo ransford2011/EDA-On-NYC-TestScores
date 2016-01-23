@@ -748,17 +748,21 @@ Since there is a lot of over plotting, we use the alpha parameter to reduce it.
 
 
 ```{r geom_point_plot_2, cache=TRUE,cache.path= 'cache/',fig.path='figure/',fig.height = 12, fig.width =14}
-p1 <- ggplot(school_data.2013.2015, aes(x = Level1Percentage, y = Mean.Scale.Score)) + 
+p1 <- ggplot(school_data.2013.2015, aes(x = Level1Percentage, 
+                                        y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25) + geom_smooth(method = 'lm', color= 'red')
 
 
-p2 <- ggplot(school_data.2013.2015, aes(x = Level2Percentage, y = Mean.Scale.Score)) + 
+p2 <- ggplot(school_data.2013.2015, aes(x = Level2Percentage, 
+                                        y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
-p3 <- ggplot(school_data.2013.2015, aes(x = Level3Percentage, y = Mean.Scale.Score)) + 
+p3 <- ggplot(school_data.2013.2015, aes(x = Level3Percentage, 
+                                        y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
-p4 <- ggplot(school_data.2013.2015, aes(x = Level4Percentage, y = Mean.Scale.Score)) + 
+p4 <- ggplot(school_data.2013.2015, aes(x = Level4Percentage, 
+                                        y = Mean.Scale.Score)) + 
   geom_point(alpha = 1/25)+  geom_smooth(method = 'lm', color= 'red')
 
 grid.arrange(p1,p2,p3,p4,ncol=2)
@@ -990,7 +994,8 @@ ggplot(school_data, aes(x = Number.Tested, y = as.integer(Level1Count))) +
 ```
 
 My hypothesis is somewhat true, but we can see in Brooklyn and Queens that the 
-number of Level 1 students decrease as the number of students tested increases.  Let's see what the correlation test shows:
+number of Level 1 students decrease as the number of students tested 
+increases.  Let's see what the correlation test shows:
 
 ```{r}
 cor.test(school_data$Number.Tested,as.integer(school_data$Level1Count))
