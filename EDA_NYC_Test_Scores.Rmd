@@ -569,6 +569,7 @@ initial_reshape_school_data <- function(df,s){
   df$Level2Percentage <- as.character(df$Level2Percentage)
   df$Level3Percentage <- as.character(df$Level3Percentage)
   df$Level4Percentage <- as.character(df$Level4Percentage)
+  df$Level3And4Percentage <- as.character(df$Level3And4Percentage)
   
   df$Mean.Scale.Score <- as.character(df$Mean.Scale.Score)
   df$Mean.Scale.Score <- as.integer(df$Mean.Scale.Score)
@@ -576,6 +577,8 @@ initial_reshape_school_data <- function(df,s){
   df$Level2Percentage <- as.numeric(df$Level2Percentage)
   df$Level3Percentage <- as.numeric(df$Level3Percentage)
   df$Level4Percentage <- as.numeric(df$Level4Percentage)
+  
+  df$Level3And4Percentage <- as.numeric(df$Level3And4Percentage)
   df$Subject <- s
   return(df)
 }
@@ -1042,9 +1045,9 @@ increases.  Let's see what the correlation test shows:
 cor.test(school_data$Number.Tested,as.integer(school_data$Level1Count))
 ```
 
-The correlation test shows that I was somewhat true, as their is some correlation 
-between Number tested and Level1 count, but it is not a strong correlation.  Let's 
-see how the same plot faceted over years looks like:
+The correlation test shows that I was somewhat correct, as their is some 
+correlation between Number tested and Level1 count, but it is not a strong 
+correlation.  Let's see how the same plot faceted over years looks like:
 
 ```{r geom_point_plot_8, cache=TRUE,cache.path= 'cache/', fig.path='figure/'}
 ggplot(school_data, aes(x = Number.Tested, y = Level1Percentage)) + 
@@ -1399,16 +1402,31 @@ ggplot(school_data, aes(x = factor(Year),
   scale_y_continuous(labels = percent) + 
   theme(legend.position = "none") + xlab("Year") + 
   ylab("Students who are proficient for their grade") + 
-  ggtitle("Percentage of Proficient Students from 2006-2015")
+  ggtitle("Percentage of Students Who Met Proficient Standards from 2006-2015")
 ```
 
-##Description One
-It is shown that 2009 had the highest median percentage value of proficient 
-students over all the years where the IQR for 2009 falls between 63% and 89%.  
-From 2006-2009 the median percentage of proficient students lies above 50% and 
-falls below 50% from 2010-2011.  After the sharp decline in 2013, the median 
-percentage value reaches 25% in 2015.  From 2013-2015, 75% of the schools 
-have less than a 50% proficient students according to the standards.
+##Description One 
+In this plot, we illustrate the percentage range of students who met the 
+proficient standards across all the schools in NYC in each year.  It is shown 
+that 2009 had the highest median percentage value of proficient 
+students over all the years where the IQR for 2009 falls between 62% and 91% 
+illustrated below.
+
+```{r}
+by(as.numeric(school_data$Level3And4Percentage), school_data$Year,summary)
+```
+
+From 2006-2009 the median percentage of proficient students lies between 56% and 
+79% and falls to 44-48%  from 2010-2011.  After the sharp decline in 2013, the 
+median percentage value reaches 25% in 2015.  From 2013-2015, 75% of the schools 
+have less than 46% proficient students according to the standards.  This plot 
+was chosen to illustrate the incline and decline of progress made year over 
+year.  We can see that there were drastic changes in test scores in 2010 and 
+2013.  I believe that the decline in test scores in 2013 are due to the changing 
+of the test to better align with Common Core Standards. In 2010, the number of 
+questions answered correctly had increased to meet the proficiency level which 
+probably explains the decline there. Usually when test or requirements changes 
+occur, you see this ripple effect reflected in the test scores.
 
 ##Plot Two
 ```{r, echo=FALSE}
@@ -1417,18 +1435,38 @@ ggplot(subset(school_data ,Category %in%
                         aes(x = as.numeric(Level3And4Percentage)/100, 
                             y =..count../sum(..count..))) + 
   geom_freqpoly(aes(color = Category)) + 
-  scale_x_continuous(labels = percent) +
+  scale_x_continuous(labels = percent, breaks = seq(0,1,0.10)) +
   xlab("Students who are proficient for their grade") + 
-  ylab("Percentage of Schools") + 
-  ggtitle("Percentage of Proficient Students by Race") + 
+  ylab("Percentage of Students based on Race") + 
+  ggtitle("Percentage of Students Who Met Proficient Standards by Race") + 
   scale_y_continuous(labels = percent) 
 ```
 
 ##Description Two
-The trends for Black and Hispanic students are roughly the same.  The trends 
-for White and Asian students also follow the same pattern.  If we look at the 
-trend lines for Black and Hispanic students vs. White and Asian Students, we 
-can see the interception point occurring around the 80% proficient mark.   
+This plot illustrates the trends of the percentage of proficient students across 
+each race.  The trends for Black and Hispanic students are roughly the 
+same.  The trends for White and Asian students also follow the same pattern.  If
+we look at the trend lines for Black and Hispanic students vs. White and Asian 
+Students, we can see the interception point occurring around the 81% mark. Below
+, we generate some summary statistics and the IQR broken down across each race.   
+
+```{r,echo=FALSE}
+school.subset <- subset(school_data ,Category %in% 
+                c("Black", "White", "Hispanic", "Asian"))
+```
+
+```{r}
+by(school.subset$Level3And4Percentage, school.subset$Category,summary)
+by(school.subset$Level3And4Percentage, school.subset$Category,IQR)
+```
+
+We can see that the intercept point occurs close around the median value of the 
+Asian students' trend line.  This plot was chosen because, I wanted to see the 
+trend of how the number of students who tested at or above the proficient 
+standard across racial lines.  Although NYC is a very diverse place, there is 
+still a racial divide across communities there.  There are entire communities 
+that may belong to a specific culture, so I wanted to see if this is reflected 
+in the test data.  The trend lines seems to validate my observations.
 
 ##Plot Three
 ```{r, echo=FALSE}
@@ -1438,14 +1476,40 @@ ggplot(school_data,
   scale_y_continuous(labels = percent) + 
   theme(legend.position = "none") + 
   ylab("Students who are proficient for their grade") + 
-  ggtitle("Percentage of Proficient Students from 2006-2015")
+  ggtitle("Percentage of Students Who Met Proficient Standards from 2006-2015")
 ```
 
 ##Description Three
-The IQR for Manhattan falls almost exactly between 25 and 75% giving it the 
-largest IQR across all boroughs.  75% of the Bronx schools have less than a 
-55% proficient rate for its students.
+This plot gives us the percentage range of students who tested at or above the 
+proficiency standard across each borough.  The IQR for Manhattan falls almost 
+exactly between 25 and 75% giving it the largest IQR across all boroughs.  Based on the boxplots, it shown that 75% of the Bronx schools have less than a 56% proficient 
+rate for its students.
 
+```{r}
+by(as.numeric(school_data$Level3And4Percentage), school_data$Borough,summary)
+```
+
+I chose this plot because I wanted to get a glimpse at which borough needs the 
+most attention in respect of improving the education for their students.  The 
+Bronx is the clear choice for this by a long shot.  If 75% of the schools have 
+students where about half of the student population is meeting the proficiency 
+standards, then there is a lot of work that needs to be done. Let's see how many
+schools reside in the Bronx borough.
+
+```{r}
+bronx.schools <- subset(school_data, Borough == "Bronx")
+bronx.schools <- unique(bronx.schools$School.Name)
+summary(subset(bronx.schools, !is.na(bronx.schools)))
+```
+
+Given that there are 261 Bronx schools in this dataset, there are 195 schools 
+where only half of the students are meeting the standards.  That is pretty 
+significant.  It's also worth noting the large Interquartile range for the 
+Manhattan borough.  I was expecting this large range as well as there is Harlem 
+which has some of the same socioeconomic struggles as the South Bronx which might 
+affect test scores, and then there is the more affluent Lower Manhattan in which 
+resources are more abundant. I'm pretty curious at how the proficiency levels 
+align with these regions.
 
 #Reflection
 Analyzing the NYC Test data gave me quite some insight about their education 
